@@ -46,6 +46,7 @@ AROpNovSteppingAction::AROpNovSteppingAction()
   fScintillationCounter = 0;
   fCerenkovCounter      = 0;
   fEventNumber = -1;
+  fprintf(fp2, "who ","x","y","z","MyKinEnPre/MeV","xx","yy","zz","MyKinEnPost/MeV","MyTrackID");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

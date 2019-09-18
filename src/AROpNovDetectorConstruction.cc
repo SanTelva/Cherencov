@@ -55,7 +55,7 @@
 AROpNovDetectorConstruction::AROpNovDetectorConstruction()
  : G4VUserDetectorConstruction()
 {
-  fExpHall_x = fExpHall_y = fExpHall_z = 10.0*m;
+  fExpHall_x = fExpHall_y = fExpHall_z = 50.0*cm;
 //  fTank_x    = fTank_y    = fTank_z    =  5.0*m;
 //  fBubble_x  = fBubble_y  = fBubble_z  =  0.5*m;
 
@@ -105,7 +105,7 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
 //
   G4Element*  Si=new G4Element("Silicon", "Si", z=14.0,a=28.09*g/mole);
 
-  G4Material* quartz = new G4Material("Quartz", density= 2.201*g/cm3, nelements=2);
+  G4Material* quartz = new G4Material("Quartz", density= 2.210*g/cm3, nelements=2);
   quartz->AddElement(Si, 1);
   quartz->AddElement(O, 2);
 //
@@ -331,10 +331,11 @@ G4cout << " QRad 1 " << G4endl;
   G4ThreeVector pos1 = G4ThreeVector(0, 0, 6*cm);
         
   // Conical section shape       
-  G4double shape1_rminb =  0.*cm, shape1_rmaxb = 2.*cm;
-  G4double shape1_rmina =  0.*cm, shape1_rmaxa = 4.*cm;
+  G4double shape1_rminb =  0.*cm, shape1_rmaxb = 1.*cm;
+  G4double shape1_rmina =  0.*cm, shape1_rmaxa = 2.*cm;
   G4double shape1_hz = 1*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
+  
   G4Cons* consSolid =    
     new G4Cons("Cons", 
     shape1_rmina, shape1_rmaxa, shape1_rminb, shape1_rmaxb, shape1_hz,
@@ -345,7 +346,7 @@ G4cout << " QRad 1 " << G4endl;
                         quartz,          //its material
                         "Cons");           //its name
                
-  new G4PVPlacement(0,                       //no rotation
+  G4VPhysicalVolume* consPhys = new G4PVPlacement(0,                       //no rotation
                     pos1,                    //at position
                     consLogical,             //its logical volume
                     "Cons",                //its name
@@ -372,7 +373,7 @@ G4cout << " QRad 1 " << G4endl;
                         quartz,          //its material
                         "Tube");           //its name
                
-  new G4PVPlacement(0,                       //no rotation
+  G4VPhysicalVolume* tubePhys =  new G4PVPlacement(0,                       //no rotation
                     pos2,                    //at position
                     tubeLogical,             //its logical volume
                     "Tube",                //its name
@@ -381,7 +382,7 @@ G4cout << " QRad 1 " << G4endl;
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  G4Box* quartzRad_box = new G4Box("QRad",fSiOrad_x,fSiOrad_y,fSiOrad_z);
+  /*G4Box* quartzRad_box = new G4Box("QRad",fSiOrad_x,fSiOrad_y,fSiOrad_z);
 
   G4LogicalVolume* quartzRad_log
     = new G4LogicalVolume(quartzRad_box,quartz,"QRad_l",0,0,0);
@@ -391,7 +392,7 @@ G4cout << " QRad 1 " << G4endl;
 //                   quartzRad_log,false,0);
                     expHall_log,false,0);                        
 
-
+*/
 G4cout << " QRad 2 " << G4endl;
 // ------------- Surfaces --------------
 //
@@ -443,10 +444,10 @@ G4cout << " QRad 2 " << G4endl;
 
   G4LogicalBorderSurface* quartzSurface =
           new G4LogicalBorderSurface("QuartzSurface",
-                            quartzRad_phys,expHall_phys,opQuartzSurface);
+                            tubePhys,expHall_phys,opQuartzSurface);
 
   G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
-        (quartzSurface->GetSurface(quartzRad_phys,expHall_phys)->
+        (quartzSurface->GetSurface(tubePhys,expHall_phys)->
                                                        GetSurfaceProperty());
   if (opticalSurface) opticalSurface->DumpInfo();
 
