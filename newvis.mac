@@ -59,5 +59,6 @@
 /vis/viewer/set/style surface
 /vis/viewer/set/edge 0
 #/vis/viewer/set/viewpointThetaPhi 130 20
-/vis/viewer/set/viewpointVector 1 0 0
+
+/vis/viewer/set/viewpointVector 1 1 1
 #/vis/viewer/set/background white

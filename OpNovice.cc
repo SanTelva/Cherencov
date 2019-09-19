@@ -51,6 +51,14 @@
 #include "G4RunManager.hh"
 #endif
 
+#ifdef G4VIS_USE
+#include "G4VisExecutive.hh"
+#endif
+
+#ifdef G4UI_USE
+#include "G4UIExecutive.hh"
+#endif
+
 #include "G4UImanager.hh"
 
 #include "OpNovicePhysicsList.hh"
@@ -141,39 +149,39 @@ int main(int argc,char** argv)
   //
   runManager->Initialize();
 
+  #ifdef G4VIS_USE
   // Initialize visualization
-  //
-  G4VisManager* visManager = new G4VisExecutive;
-  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  // G4VisManager* visManager = new G4VisExecutive("Quiet");
+  G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
+  #endif
 
   // Get the pointer to the User Interface manager
-  //
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
-  if ( macro.size() ) {
-     // Batch mode
-     G4String command = "/control/execute ";
-     UImanager->ApplyCommand(command+macro);
-  }
-  else // Define UI session for interactive mode
+  if (DefOpt.mfile!="")   //Run the macros
   {
-     UImanager->ApplyCommand("/control/execute vis.mac");
-     if (ui->IsGUI())
-        UImanager->ApplyCommand("/control/execute gui.mac");
-     ui->SessionStart();
-     delete ui;
+    G4String command = "/control/execute ";
+    G4String fileName = DefOpt.mfile;
+    UImanager->ApplyCommand(command+fileName);
+  } else {
+    #ifdef G4UI_USE
+      G4UIExecutive* ui = new G4UIExecutive(1, &argv[0]);
+      #ifdef G4VIS_USE
+        if(DefOpt.vis) {UImanager->ApplyCommand("/control/execute ../source/macros/vis.mac");}
+      #endif
+      ui->SessionStart();
+      delete ui;
+    #endif
   }
-
+  
   // Job termination
-  // Free the store: user actions, physics_list and detector_description are
-  //                 owned and deleted by the run manager, so they should not
-  //                 be deleted in the main() program !
-
-  delete visManager;
+  #ifdef G4VIS_USE
+    delete visManager;
+  #endif
   delete runManager;
-
+  cout << "Ending!" << endl;
+  cerr.rdbuf(cerrBuf);
+  ferr.close();
   return 0;
 }
 
