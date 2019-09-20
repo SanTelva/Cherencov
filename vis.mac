@@ -20,6 +20,7 @@
 #
 # Draw geometry:
 /vis/drawVolume
+#/vis/drawLogicalVolume
 #
 # Specify view angle:
 #/vis/viewer/set/viewpointThetaPhi 130. 20.
