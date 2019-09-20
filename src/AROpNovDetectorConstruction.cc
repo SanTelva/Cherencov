@@ -85,7 +85,9 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
 //
   G4Element* N = new G4Element("Nitrogen", "N", z=7 , a=14.01*g/mole);
   G4Element* O = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
+  G4Element*  Si=new G4Element("Silicon", "Si", z=14.0,a=28.09*g/mole);
 
+  G4Element*  Al=new G4Element("Aluminium", "Al", z = 13.0, a=26.981*g/mole);
   G4Material* air = new G4Material("Air", density=1.29*mg/cm3, nelements=2);
   air->AddElement(N, 70.*perCent);
   air->AddElement(O, 30.*perCent);
@@ -103,11 +105,12 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
 
 // Quartz
 //
-  G4Element*  Si=new G4Element("Silicon", "Si", z=14.0,a=28.09*g/mole);
-
+  
+  G4Material* alum = new G4Material("Aluminium", density= 2.693*g/cm3, nelements=1);
   G4Material* quartz = new G4Material("Quartz", density= 2.210*g/cm3, nelements=2);
   quartz->AddElement(Si, 1);
   quartz->AddElement(O, 2);
+  alum->AddElement(Al, 1);
 //
   const G4int NUMENTRIES = 2;
   // Energy bins
@@ -328,14 +331,14 @@ G4cout << " World 2  " << G4endl;
 //   fSiOrad_x = 20*mm; fSiOrad_y = 20*mm; fSiOrad_z = 30.0*mm;
 G4cout << " QRad 1 " << G4endl;
 
-  G4ThreeVector pos1 = G4ThreeVector(0, 0, 6*cm);
+  
         
   // Conical section shape       
   G4double shape1_rminb =  0.*cm, shape1_rmaxb = 1.*cm;
   G4double shape1_rmina =  0.*cm, shape1_rmaxa = 2.*cm;
   G4double shape1_hz = 1*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
-  
+  G4ThreeVector pos1 = G4ThreeVector(0, 0, 3*shape1_hz);
   G4Cons* consSolid =    
     new G4Cons("Cons", 
     shape1_rmina, shape1_rmaxa, shape1_rminb, shape1_rmaxb, shape1_hz,
@@ -358,7 +361,7 @@ G4cout << " QRad 1 " << G4endl;
   //     
   // Shape 2
   //
-  G4ThreeVector pos2 = G4ThreeVector(0, 0*cm, 0*cm);
+  G4ThreeVector pos2 = G4ThreeVector(0*cm, 0*cm, 0*cm);
   
   //Tube shape
   
@@ -377,6 +380,25 @@ G4cout << " QRad 1 " << G4endl;
                     pos2,                    //at position
                     tubeLogical,             //its logical volume
                     "Tube",                //its name
+                    expHall_log,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  G4Tubs* wrapSolid =    
+    new G4Tubs("AlumWrap",                      //its name
+              shape1_rmaxa, shape1_rmaxa+0.005*cm, 2*shape1_hz, 
+               shape1_phimin, shape1_phimax); //its size
+                
+  G4LogicalVolume* wrapLogical =                         
+    new G4LogicalVolume(wrapSolid,         //its solid
+                        alum,          //its material
+                        "AlumWrap");           //its name
+               
+  G4VPhysicalVolume* wrapPhys =  new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    tubeLogical,             //its logical volume
+                    "AlumWrap",                //its name
                     expHall_log,                //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
@@ -434,23 +456,22 @@ G4cout << " QRad 2 " << G4endl;
 
 // 14/07/2019 Оптические свойства кварца просто скопированы , нужно ввести правильные
 
-  G4OpticalSurface* opQuartzSurface = new G4OpticalSurface("QuartzSurface");
+  G4OpticalSurface* opAlumSurface = new G4OpticalSurface("AlumSurface");
 //  opWaterSurface->SetType(dielectric_dielectric);
 //  opWaterSurface->SetFinish(ground);
 //  opWaterSurface->SetModel(unified);
-  opQuartzSurface->SetType(dielectric_LUTDAVIS);
-  opQuartzSurface->SetFinish(Rough_LUT);
-  opQuartzSurface->SetModel(DAVIS);
+  opAlumSurface->SetType(dielectric_LUTDAVIS);
+  opAlumSurface->SetFinish(Rough_LUT);
+  opAlumSurface->SetModel(DAVIS);
 
-  G4LogicalBorderSurface* quartzSurface =
-          new G4LogicalBorderSurface("QuartzSurface",
-                            tubePhys,expHall_phys,opQuartzSurface);
+  G4LogicalBorderSurface* alumSurface =
+          new G4LogicalBorderSurface("AlumSurface",
+                            wrapPhys,expHall_phys,opAlumSurface);
 
   G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
-        (quartzSurface->GetSurface(tubePhys,expHall_phys)->
+        (alumSurface->GetSurface(wrapPhys,expHall_phys)->
                                                        GetSurfaceProperty());
   if (opticalSurface) opticalSurface->DumpInfo();
-
 //------------------
 
 //
@@ -480,6 +501,7 @@ G4cout << " QRad 2 " << G4endl;
 
   //OpticalQuartzSurface
   G4double refractiveIndex[num] = {1.35, 1.40};
+  G4double reflectivity[num] = {0.999, 0.999};
   G4double specularLobe[num]    = {0.3, 0.3};
   G4double specularSpike[num]   = {0.2, 0.2};
   G4double backScatter[num]     = {0.2, 0.2};
@@ -490,8 +512,9 @@ G4cout << " QRad 2 " << G4endl;
   myST3->AddProperty("SPECULARLOBECONSTANT",  ephoton, specularLobe,    num);
   myST3->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
   myST3->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
-
-  G4cout << "Quartz Surface G4MaterialPropertiesTable" << G4endl;
+  myST3->AddProperty("REFLECTIVITY",          ephoton, reflectivity,    num);
+  G4cout << "Aluminium Surface G4MaterialPropertiesTable" << G4endl;
+  opAlumSurface -> SetMaterialPropertiesTable(myST3);
   myST3->DumpTable();
 
 //  opWaterSurface->SetMaterialPropertiesTable(myST1);
