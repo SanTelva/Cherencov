@@ -387,7 +387,7 @@ G4cout << " QRad 1 " << G4endl;
 
   G4Tubs* wrapSolid =    
     new G4Tubs("AlumWrap",                      //its name
-              shape1_rmaxa, shape1_rmaxa+0.005*cm, 2*shape1_hz, 
+              shape1_rmaxa+0.005*cm, shape1_rmaxa+0.01*cm, 2*shape1_hz, 
                shape1_phimin, shape1_phimax); //its size
                 
   G4LogicalVolume* wrapLogical =                         
@@ -460,9 +460,9 @@ G4cout << " QRad 2 " << G4endl;
 //  opWaterSurface->SetType(dielectric_dielectric);
 //  opWaterSurface->SetFinish(ground);
 //  opWaterSurface->SetModel(unified);
-  opAlumSurface->SetType(dielectric_LUTDAVIS);
-  opAlumSurface->SetFinish(Rough_LUT);
-  opAlumSurface->SetModel(DAVIS);
+  opAlumSurface->SetType(dielectric_metal);
+  opAlumSurface->SetFinish(polished);
+  opAlumSurface->SetModel(glisur);
 
   G4LogicalBorderSurface* alumSurface =
           new G4LogicalBorderSurface("AlumSurface",
@@ -478,7 +478,7 @@ G4cout << " QRad 2 " << G4endl;
 // Generate & Add Material Properties Table attached to the optical surfaces
 //
   const G4int num = 2;
-  G4double ephoton[num] = {2.034*eV, 4.136*eV};
+  G4double ephoton[num] = {2.034*eV, 10.136*eV};
 
   //OpticalWaterSurface
 /*  G4double refractiveIndex[num] = {1.35, 1.40};
@@ -505,6 +505,7 @@ G4cout << " QRad 2 " << G4endl;
   G4double specularLobe[num]    = {0.3, 0.3};
   G4double specularSpike[num]   = {0.2, 0.2};
   G4double backScatter[num]     = {0.2, 0.2};
+  G4double absorption[num]      = {0.001, 0.001}
 
   G4MaterialPropertiesTable* myST3 = new G4MaterialPropertiesTable();
 
@@ -513,6 +514,7 @@ G4cout << " QRad 2 " << G4endl;
   myST3->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
   myST3->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
   myST3->AddProperty("REFLECTIVITY",          ephoton, reflectivity,    num);
+  myST3->AddProperty("ABSORPTION",            ephoton, absorption,    num);
   G4cout << "Aluminium Surface G4MaterialPropertiesTable" << G4endl;
   opAlumSurface -> SetMaterialPropertiesTable(myST3);
   myST3->DumpTable();
