@@ -1,0 +1,48 @@
+\documentclass[14pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath}
+\usepackage{indentfirst}
+\usepackage[final]{graphicx}
+\usepackage{floatflt}
+
+\graphicspath{{images/}}
+\usepackage{geometry}
+\geometry{left=2cm}% левое поле
+\geometry{right=1.5cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+
+\renewcommand{\theenumi}{\arabic{enumi}}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumi}{\arabic{enumi}}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumii}{.\arabic{enumii}}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumiii}{.\arabic{enumiii}}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра
+
+\begin{document}
+	\input{Kur-Title.tex}% это титульный лист
+	\tableofcontents
+	\input{Kur-Description.tex}% это описание
+	\input{Kur-Main.tex}
+	%\input{Kur-Finish}% заключение
+	%\input{Kur-App}% приложение
+	\newpage
+	
+	\begin{thebibliography}{0}
+		\bibitem{bolotovsky}Болотовский~С.М.
+		Теория эффекта Вавилова-Черенкова. --- УФН 62 201–246 (1957)
+		\bibitem{soros}	Денисов~С.П.
+		Излучение <<сверхсветовых>> частиц (эффект Черенкова). --- Соросовский образовательный журнал, номер 2, 1996.
+		\bibitem{podorozny} Д. М.~Подорожный, А. Н.~Турундаевский, В. Я.~Шестоперов. Изучение космических лучей высокой энергии с помощью черенковского излучения, рождённого заряженной частицей в верхних слоях атмосферы. --- Вестник Московского университета. Серия	3. Физика. Астрономия.	2001. н.6.
+		\bibitem{akimov}Акимов~Ю.К.
+		Черенковские детекторы в физике частиц. --- Ядерная физика, т.67, н.7, 2004
+		\bibitem{prak}Специальный ядерный практикум.
+		Черенковский детектор.
+		\bibitem{yakushal}А.А.~Иванов, С.П.~Кнуренко, А.Д.~Красильников, И.В.~Ксенофонтов,
+		З.Е.~Петров, М.И.~Правдин, Л.В.~Тимофеев, И.Е.~Слепцов.
+		Разработка прототипа широкоугольного черенковского телескопа для якутской установки ШАЛ. --- Известия РАН. Серия физическая, 2014, т.78, н.3.
+	\end{thebibliography}
+\end{document}

@@ -505,7 +505,10 @@ G4cout << " QRad 2 " << G4endl;
   G4double specularLobe[num]    = {0.3, 0.3};
   G4double specularSpike[num]   = {0.2, 0.2};
   G4double backScatter[num]     = {0.2, 0.2};
-  G4double absorption[num]      = {0.001, 0.001}
+
+  //  G4double absorption[num]      = {0.001, 0.001};
+  G4double absorptionSi[num]      = {0.999, 0.999};
+  G4double absorptionAl[num]      = {0.001, 0.001};  
 
   G4MaterialPropertiesTable* myST3 = new G4MaterialPropertiesTable();
 
@@ -514,7 +517,7 @@ G4cout << " QRad 2 " << G4endl;
   myST3->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
   myST3->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
   myST3->AddProperty("REFLECTIVITY",          ephoton, reflectivity,    num);
-  myST3->AddProperty("ABSORPTION",            ephoton, absorption,    num);
+  myST3->AddProperty("ABSORPTION",            ephoton, absorptionAl,    num);
   G4cout << "Aluminium Surface G4MaterialPropertiesTable" << G4endl;
   opAlumSurface -> SetMaterialPropertiesTable(myST3);
   myST3->DumpTable();
