@@ -478,7 +478,7 @@ G4cout << " QRad 2 " << G4endl;
 // Generate & Add Material Properties Table attached to the optical surfaces
 //
   const G4int num = 2;
-  G4double ephoton[num] = {2.034*eV, 10.136*eV};
+  G4double ephoton[num] = {4.113*eV, 1.774*eV};
 
   //OpticalWaterSurface
 /*  G4double refractiveIndex[num] = {1.35, 1.40};
@@ -500,15 +500,15 @@ G4cout << " QRad 2 " << G4endl;
 // добавляем кварц, просто копируем -- УТОЧНИТЬ!!!
 
   //OpticalQuartzSurface
-  G4double refractiveIndex[num] = {1.35, 1.40};
-  G4double reflectivity[num] = {0.999, 0.999};
+  G4double refractiveIndex[num] = {1.58, 1.46};
+  G4double reflectivity[num] = {0.85, 0.84};
   G4double specularLobe[num]    = {0.3, 0.3};
   G4double specularSpike[num]   = {0.2, 0.2};
   G4double backScatter[num]     = {0.2, 0.2};
 
   //  G4double absorption[num]      = {0.001, 0.001};
   G4double absorptionSi[num]      = {0.999, 0.999};
-  G4double absorptionAl[num]      = {0.001, 0.001};  
+  G4double absorptionAl[num]      = {0.15, 0.16};  
 
   G4MaterialPropertiesTable* myST3 = new G4MaterialPropertiesTable();
 
