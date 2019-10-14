@@ -135,13 +135,14 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
 // Water
 //
   G4double refractiveIndex1[] =
-            { 1.3435, 1.344,  1.3445, 1.345,  1.3455,
-              1.346,  1.3465, 1.347,  1.3475, 1.348,
-              1.3485, 1.3492, 1.35,   1.3505, 1.351,
-              1.3518, 1.3522, 1.3530, 1.3535, 1.354,
-              1.3545, 1.355,  1.3555, 1.356,  1.3568,
-              1.3572, 1.358,  1.3585, 1.359,  1.3595,
-              1.36,   1.3608};
+            { 1.5505, 1.542741,  1.5285, 1.5086,  1.4997,
+              1.4983, 1.4971, 1.4962, 1.4951,
+              1.4942, 1.4932,  1.4924, 1.4916,  1.491,
+              1.4918, 1.4901,  1.4893, 1.4885,  1.4879,
+              1.487,   1.486,
+              1.4856,  1.4792, 1.4748,  1.4696, 1.4630,
+              1.4607, 1.4585, 1.458,   1.4570, 1.455,
+              1.4547};
 
   assert(sizeof(refractiveIndex1) == sizeof(photonEnergy));
 
@@ -208,7 +209,7 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
      5.39129*eV, 5.63635*eV, 5.90475*eV, 6.19998*eV
   };
 
-  const G4int numentries_water = sizeof(energy_water)/sizeof(G4double);
+/*  const G4int numentries_water = sizeof(energy_water)/sizeof(G4double);
 
   //assume 100 times larger than the rayleigh scattering for now.
   G4double mie_water[] = {
@@ -234,7 +235,7 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
      1004.528*m, 833.9666*m, 686.1063*m
   };
 
-/*  assert(sizeof(mie_water) == sizeof(energy_water));
+  assert(sizeof(mie_water) == sizeof(energy_water));
 
   // gforward, gbackward, forward backward ratio
   G4double mie_water_const[3]={0.99,0.99,0.8};
@@ -385,24 +386,48 @@ G4cout << " QRad 1 " << G4endl;
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  G4Tubs* wrapSolid =    
-    new G4Tubs("AlumWrap",                      //its name
-              shape1_rmaxa+0.005*cm, shape1_rmaxa+0.01*cm, 2*shape1_hz, 
+  G4Tubs* wrapTubeSolid =    
+    new G4Tubs("AlumwrapTube",                      //its name
+              shape1_rmaxa+0.05*cm, shape1_rmaxa+0.1*cm, 2*shape1_hz, 
                shape1_phimin, shape1_phimax); //its size
                 
-  G4LogicalVolume* wrapLogical =                         
-    new G4LogicalVolume(wrapSolid,         //its solid
+  G4LogicalVolume* wrapTubeLogical =                         
+    new G4LogicalVolume(wrapTubeSolid,         //its solid
                         alum,          //its material
-                        "AlumWrap");           //its name
+                        "AlumwrapTube");           //its name
                
-  G4VPhysicalVolume* wrapPhys =  new G4PVPlacement(0,                       //no rotation
+  G4VPhysicalVolume* wrapTubePhys =  new G4PVPlacement(0,                       //no rotation
                     pos2,                    //at position
                     tubeLogical,             //its logical volume
-                    "AlumWrap",                //its name
+                    "AlumwrapTube",                //its name
                     expHall_log,                //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+
+
+// conical-shaped Aluminium wrapTube    
+
+
+  G4Cons* wrapConsSolid =    
+    new G4Cons("wrapCons", 
+    shape1_rmaxa+0.05*cm, shape1_rmaxa+0.1*cm, shape1_rmaxb+0.05*cm, shape1_rmaxb+0.1*cm, shape1_hz,
+    shape1_phimin, shape1_phimax);
+                      
+  G4LogicalVolume* wrapConsLogical =                         
+    new G4LogicalVolume(wrapConsSolid,         //its solid
+                        alum,          //its material
+                        "wrapCons");           //its name
+
+  G4VPhysicalVolume* wrapConsPhys = new G4PVPlacement(0,                       //no rotation
+                    pos1,                    //at position
+                    wrapConsLogical,             //its logical volume
+                    "wrapCons",                //its name
+                    expHall_log,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
 
   /*G4Box* quartzRad_box = new G4Box("QRad",fSiOrad_x,fSiOrad_y,fSiOrad_z);
 
@@ -454,23 +479,40 @@ G4cout << " QRad 2 " << G4endl;
   if (opticalSurface) opticalSurface->DumpInfo();
 */
 
+
+// 14/10/2019
+// Si radiator
+//
+  G4OpticalSurface* opSiSurface = new G4OpticalSurface("SiSurface");
+  opSiSurface->SetType(dielectric_metal);
+  opSiSurface->SetFinish(polished);
+  opSiSurface->SetModel(glisur);
+
+  G4LogicalSkinSurface* SiSurface =
+          new G4LogicalSkinSurface("SiSurface", tubeLogical , opSiSurface);
+
+G4OpticalSurface*  opticalSurface = dynamic_cast <G4OpticalSurface*>
+        (SiSurface->GetSurface(tubeLogical)->GetSurfaceProperty());
+  if (opticalSurface) opticalSurface->DumpInfo();
+// 14/10/2019
+
 // 14/07/2019 Оптические свойства кварца просто скопированы , нужно ввести правильные
 
   G4OpticalSurface* opAlumSurface = new G4OpticalSurface("AlumSurface");
-//  opWaterSurface->SetType(dielectric_dielectric);
-//  opWaterSurface->SetFinish(ground);
-//  opWaterSurface->SetModel(unified);
   opAlumSurface->SetType(dielectric_metal);
   opAlumSurface->SetFinish(polished);
   opAlumSurface->SetModel(glisur);
 
-  G4LogicalBorderSurface* alumSurface =
-          new G4LogicalBorderSurface("AlumSurface",
-                            wrapPhys,expHall_phys,opAlumSurface);
+  G4LogicalSkinSurface* alumSurface =
+          new G4LogicalSkinSurface("AlumSurface",wrapTubeLogical,opAlumSurface);
+  
+  //G4LogicalSkinSurface* alumConsSurface =
+          //new G4LogicalSkinSurface("AlumSurface",
+                            //wrapConsPhys,expHall_phys,opAlumSurface);
 
-  G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
-        (alumSurface->GetSurface(wrapPhys,expHall_phys)->
-                                                       GetSurfaceProperty());
+  //G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
+        (alumSurface->GetSurface(wrapTubeLogical)->
+                                                       GetSurfaceProperty());                                                  
   if (opticalSurface) opticalSurface->DumpInfo();
 //------------------
 
