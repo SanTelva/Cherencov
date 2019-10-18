@@ -1,0 +1,386 @@
+Available UI session types: [ GAG, tcsh, csh ]
+
+**************************************************************
+ Geant4 version Name: geant4-10-05-patch-01    (17-April-2019)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+Air G4MaterialPropertiesTable
+0: RINDEX
+2.034e-06   1
+2.068e-06   1
+2.103e-06   1
+2.139e-06   1
+2.177e-06   1
+2.216e-06   1
+2.256e-06   1
+2.298e-06   1
+2.341e-06   1
+2.386e-06   1
+2.433e-06   1
+2.481e-06   1
+2.532e-06   1
+2.585e-06   1
+2.64e-06   1
+2.697e-06   1
+2.757e-06   1
+2.82e-06   1
+2.885e-06   1
+2.954e-06   1
+3.026e-06   1
+3.102e-06   1
+3.181e-06   1
+3.265e-06   1
+3.353e-06   1
+3.446e-06   1
+3.545e-06   1
+3.649e-06   1
+3.76e-06   1
+3.877e-06   1
+4.002e-06   1
+4.136e-06   1
+9: GROUPVEL
+2.034e-06   299.792
+2.051e-06   299.792
+2.0855e-06   299.792
+2.121e-06   299.792
+2.158e-06   299.792
+2.1965e-06   299.792
+2.236e-06   299.792
+2.277e-06   299.792
+2.3195e-06   299.792
+2.3635e-06   299.792
+2.4095e-06   299.792
+2.457e-06   299.792
+2.5065e-06   299.792
+2.5585e-06   299.792
+2.6125e-06   299.792
+2.6685e-06   299.792
+2.727e-06   299.792
+2.7885e-06   299.792
+2.8525e-06   299.792
+2.9195e-06   299.792
+2.99e-06   299.792
+3.064e-06   299.792
+3.1415e-06   299.792
+3.223e-06   299.792
+3.309e-06   299.792
+3.3995e-06   299.792
+3.4955e-06   299.792
+3.597e-06   299.792
+3.7045e-06   299.792
+3.8185e-06   299.792
+3.9395e-06   299.792
+4.136e-06   299.792
+ World 1  
+ World 2  
+ QRad 1 
+Checking overlaps for volume Cons ... OK! 
+Checking overlaps for volume Tube ... OK! 
+Checking overlaps for volume AlumwrapTube ... OK! 
+Checking overlaps for volume wrapCons ... 
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : GeomVol1002
+      issued by : G4PVPlacement::CheckOverlaps()
+Overlap with volume already placed !
+          Overlap is detected for volume wrapCons:0
+          apparently fully encapsulating volume Cons:0          at the same level !
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+ QRad 2 
+  Surface type   = 0
+  Surface finish = 0
+  Surface model  = 0
+
+  Surface parameter 
+  ----------------- 
+1
+
+Aluminium Surface G4MaterialPropertiesTable
+0: RINDEX
+1.774e-06   1.46
+4.113e-06   1.58
+1: REFLECTIVITY
+1.774e-06   0.84
+4.113e-06   0.85
+6: SPECULARLOBECONSTANT
+1.774e-06   0.3
+4.113e-06   0.3
+7: SPECULARSPIKECONSTANT
+1.774e-06   0.2
+4.113e-06   0.2
+8: BACKSCATTERCONSTANT
+1.774e-06   0.2
+4.113e-06   0.2
+9: GROUPVEL
+1.774e-06   187.054
+4.113e-06   174.025
+23: ABSORPTION
+1.774e-06   0.16
+4.113e-06   0.15
+### Birks coefficients used in run time
+ AddDiscreteProcess to OpticalPhoton 
+Visualization Manager instantiating with verbosity "warnings (3)"...
+Visualization Manager initialising...
+Registering graphics systems...
+
+You have successfully registered the following graphics systems.
+Current available graphics systems are:
+ASCIITree (ATree)
+DAWNFILE (DAWNFILE)
+G4HepRep (HepRepXML)
+G4HepRepFile (HepRepFile)
+RayTracer (RayTracer)
+VRML1FILE (VRML1FILE)
+VRML2FILE (VRML2FILE)
+gMocrenFile (gMocrenFile)
+OpenGLImmediateX (OGLIX, OGLI)
+OpenGLStoredX (OGLSX, OGL, OGLS)
+
+Registering model factories...
+
+You have successfully registered the following model factories.
+Registered model factories:
+  generic
+  drawByAttribute
+  drawByCharge
+  drawByOriginVolume
+  drawByParticleID
+  drawByEncounteredVolume
+
+Registered filter factories:
+  attributeFilter
+  chargeFilter
+  originVolumeFilter
+  particleFilter
+  encounteredVolumeFilter
+
+You have successfully registered the following user vis actions.
+Run Duration User Vis Actions: none
+End of Event User Vis Actions: none
+End of Run User Vis Actions: none
+
+Some /vis commands (optionally) take a string to specify colour.
+"/vis/list" to see available colours.
+Visualization verbosity changed to errors (2)
+/tracking/storeTrajectory 2
+Attributes available for modeling and filtering with
+  "/vis/modeling/trajectories/create/drawByAttribute" and
+  "/vis/filtering/trajectories/create/attributeFilter" commands:
+G4TrajectoriesModel:
+  Event ID (EventID): G4int
+  Run ID (RunID): G4int
+G4SmoothTrajectory:
+  Charge (Ch): unit: e+ (G4double)
+  Track ID (ID): G4int
+  Initial kinetic energy (IKE): G4BestUnit (G4double)
+  Initial momentum magnitude (IMag): G4BestUnit (G4double)
+  Initial momentum (IMom): G4BestUnit (G4ThreeVector)
+  No. of points (NTP): G4int
+  PDG Encoding (PDG): G4int
+  Parent ID (PID): G4int
+  Particle Name (PN): G4String
+G4SmoothTrajectoryPoint:
+  Auxiliary Point Position (Aux): G4BestUnit (G4ThreeVector)
+  Step Position (Pos): G4BestUnit (G4ThreeVector)
+Visualization verbosity changed to warnings (3)
+Idle> /
+Session terminated.
+Available UI session types: [ GAG, tcsh, csh ]
+
+**************************************************************
+ Geant4 version Name: geant4-10-05-patch-01    (17-April-2019)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+Air G4MaterialPropertiesTable
+0: RINDEX
+2.034e-06   1
+2.068e-06   1
+2.103e-06   1
+2.139e-06   1
+2.177e-06   1
+2.216e-06   1
+2.256e-06   1
+2.298e-06   1
+2.341e-06   1
+2.386e-06   1
+2.433e-06   1
+2.481e-06   1
+2.532e-06   1
+2.585e-06   1
+2.64e-06   1
+2.697e-06   1
+2.757e-06   1
+2.82e-06   1
+2.885e-06   1
+2.954e-06   1
+3.026e-06   1
+3.102e-06   1
+3.181e-06   1
+3.265e-06   1
+3.353e-06   1
+3.446e-06   1
+3.545e-06   1
+3.649e-06   1
+3.76e-06   1
+3.877e-06   1
+4.002e-06   1
+4.136e-06   1
+9: GROUPVEL
+2.034e-06   299.792
+2.051e-06   299.792
+2.0855e-06   299.792
+2.121e-06   299.792
+2.158e-06   299.792
+2.1965e-06   299.792
+2.236e-06   299.792
+2.277e-06   299.792
+2.3195e-06   299.792
+2.3635e-06   299.792
+2.4095e-06   299.792
+2.457e-06   299.792
+2.5065e-06   299.792
+2.5585e-06   299.792
+2.6125e-06   299.792
+2.6685e-06   299.792
+2.727e-06   299.792
+2.7885e-06   299.792
+2.8525e-06   299.792
+2.9195e-06   299.792
+2.99e-06   299.792
+3.064e-06   299.792
+3.1415e-06   299.792
+3.223e-06   299.792
+3.309e-06   299.792
+3.3995e-06   299.792
+3.4955e-06   299.792
+3.597e-06   299.792
+3.7045e-06   299.792
+3.8185e-06   299.792
+3.9395e-06   299.792
+4.136e-06   299.792
+ World 1  
+ World 2  
+ QRad 1 
+Checking overlaps for volume Cons ... OK! 
+Checking overlaps for volume Tube ... OK! 
+Checking overlaps for volume AlumwrapTube ... OK! 
+Checking overlaps for volume wrapCons ... 
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+*** G4Exception : GeomVol1002
+      issued by : G4PVPlacement::CheckOverlaps()
+Overlap with volume already placed !
+          Overlap is detected for volume wrapCons:0
+          apparently fully encapsulating volume Cons:0          at the same level !
+*** This is just a warning message. ***
+-------- WWWW -------- G4Exception-END --------- WWWW -------
+
+ QRad 2 
+  Surface type   = 0
+  Surface finish = 0
+  Surface model  = 0
+
+  Surface parameter 
+  ----------------- 
+1
+
+Aluminium Surface G4MaterialPropertiesTable
+0: RINDEX
+1.774e-06   1.46
+4.113e-06   1.58
+1: REFLECTIVITY
+1.774e-06   0.84
+4.113e-06   0.85
+6: SPECULARLOBECONSTANT
+1.774e-06   0.3
+4.113e-06   0.3
+7: SPECULARSPIKECONSTANT
+1.774e-06   0.2
+4.113e-06   0.2
+8: BACKSCATTERCONSTANT
+1.774e-06   0.2
+4.113e-06   0.2
+9: GROUPVEL
+1.774e-06   187.054
+4.113e-06   174.025
+23: ABSORPTION
+1.774e-06   0.16
+4.113e-06   0.15
+### Birks coefficients used in run time
+ AddDiscreteProcess to OpticalPhoton 
+Visualization Manager instantiating with verbosity "warnings (3)"...
+Visualization Manager initialising...
+Registering graphics systems...
+
+You have successfully registered the following graphics systems.
+Current available graphics systems are:
+ASCIITree (ATree)
+DAWNFILE (DAWNFILE)
+G4HepRep (HepRepXML)
+G4HepRepFile (HepRepFile)
+RayTracer (RayTracer)
+VRML1FILE (VRML1FILE)
+VRML2FILE (VRML2FILE)
+gMocrenFile (gMocrenFile)
+OpenGLImmediateX (OGLIX, OGLI)
+OpenGLStoredX (OGLSX, OGL, OGLS)
+
+Registering model factories...
+
+You have successfully registered the following model factories.
+Registered model factories:
+  generic
+  drawByAttribute
+  drawByCharge
+  drawByOriginVolume
+  drawByParticleID
+  drawByEncounteredVolume
+
+Registered filter factories:
+  attributeFilter
+  chargeFilter
+  originVolumeFilter
+  particleFilter
+  encounteredVolumeFilter
+
+You have successfully registered the following user vis actions.
+Run Duration User Vis Actions: none
+End of Event User Vis Actions: none
+End of Run User Vis Actions: none
+
+Some /vis commands (optionally) take a string to specify colour.
+"/vis/list" to see available colours.
+Visualization verbosity changed to errors (2)
+/tracking/storeTrajectory 2
+Attributes available for modeling and filtering with
+  "/vis/modeling/trajectories/create/drawByAttribute" and
+  "/vis/filtering/trajectories/create/attributeFilter" commands:
+G4TrajectoriesModel:
+  Event ID (EventID): G4int
+  Run ID (RunID): G4int
+G4SmoothTrajectory:
+  Charge (Ch): unit: e+ (G4double)
+  Track ID (ID): G4int
+  Initial kinetic energy (IKE): G4BestUnit (G4double)
+  Initial momentum magnitude (IMag): G4BestUnit (G4double)
+  Initial momentum (IMom): G4BestUnit (G4ThreeVector)
+  No. of points (NTP): G4int
+  PDG Encoding (PDG): G4int
+  Parent ID (PID): G4int
+  Particle Name (PN): G4String
+G4SmoothTrajectoryPoint:
+  Auxiliary Point Position (Aux): G4BestUnit (G4ThreeVector)
+  Step Position (Pos): G4BestUnit (G4ThreeVector)
+Visualization verbosity changed to warnings (3)
+Idle> 
+Session terminated.

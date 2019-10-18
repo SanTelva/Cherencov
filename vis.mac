@@ -19,7 +19,7 @@
 #/vis/viewer/set/viewpointThetaPhi 130. 20.
 
 # Specify zoom value:
-#/vis/viewer/zoom 6
+/vis/viewer/zoom 8
 
 #/vis/geometry/set/visibility World 0 false
 #
@@ -45,7 +45,7 @@
 /vis/set/colour red
 /vis/set/lineWidth 2
 /vis/scene/add/frame   # Simple frame around the view
-/vis/set/colour        # Revert to default colour (white)
+#vis/set/colour        # Revert to default colour (white)
 /vis/set/lineWidth     # Revert to default line width (1.)
 #
 # To draw only gammas:
@@ -68,10 +68,10 @@
 # Make the "World" box invisible
 /vis/geometry/set/visibility World 0 false
 # "Envelope" is transparent blue to represent water
-/vis/geometry/set/colour Envelope 0 0 0 1 .3
-/vis/viewer/set/style surface
+/vis/geometry/set/colour AlumWrapTubeLog 0 1.0 1.0 1 .3
+#/vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
-/vis/viewer/set/viewpointThetaPhi 120 150
+#/vis/viewer/set/viewpointThetaPhi 120 150
 #
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
