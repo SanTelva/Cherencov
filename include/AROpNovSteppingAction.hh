@@ -50,6 +50,7 @@ class AROpNovSteppingAction : public G4UserSteppingAction
     G4int fScintillationCounter;
     G4int fCerenkovCounter;
     G4int fEventNumber;
+    G4int fExtruderPhotons;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

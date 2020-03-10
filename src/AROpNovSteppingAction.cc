@@ -36,7 +36,9 @@
 #include "G4Event.hh"
 #include "G4RunManager.hh"
 
-extern FILE *fp2;
+extern G4int fExtruderPhotons;
+extern G4double edepSi;
+extern FILE *fp2, *fp3;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -46,7 +48,7 @@ AROpNovSteppingAction::AROpNovSteppingAction()
   fScintillationCounter = 0;
   fCerenkovCounter      = 0;
   fEventNumber = -1;
-  fprintf(fp2, "who ","x","y","z","MyKinEnPre/MeV","xx","yy","zz","MyKinEnPost/MeV","MyTrackID");
+  //fprintf(fp2, "who ","x","y","z","MyKinEnPre/MeV","xx","yy","zz","MyKinEnPost/MeV","MyTrackID");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -101,12 +103,18 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
 	    xx= MyPostStepPoint->GetPosition()[0];
 	    yy= MyPostStepPoint->GetPosition()[1];
 	    zz= MyPostStepPoint->GetPosition()[2];
-  
- if (ParticleName != "opticalphoton") 
- fprintf(fp2,"particle %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
 
-  if (ParticleName == "opticalphoton") {  
-  fprintf(fp2,"opticalphoton    %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %7.6e %d\n",x,y,z,MyEnPre/eV,xx,yy,zz,MyEnPost/eV,MyTrackID);  
+ 
+  G4double edepStep = step -> GetTotalEnergyDeposit();
+  if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4)) edepSi += edepStep;
+//  G4cout << edepStep << G4endl;
+    
+ if (ParticleName != "opticalphoton" && zz >= -20.0) 
+ fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
+
+  if (ParticleName == "opticalphoton" && zz == 40.0) {  
+  fprintf(fp2,"opticalphoton\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyEnPre/eV,xx,yy,zz,MyEnPost/eV,MyTrackID);
+  //if (zz == 40.0){fprintf(fp2, "photon%7.6dabandoned detector\n", MyTrackID); fExtruderPhotons++;}  
   return;
                                        }
 

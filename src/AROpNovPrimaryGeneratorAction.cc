@@ -64,8 +64,8 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
   fParticleGun->SetParticlePosition(G4ThreeVector(0.0*cm,0.0*cm,-5*cm));
 //  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  G4double energy = rand()/RAND_MAX * 12 + 1;
-  fParticleGun->SetParticleEnergy(energy*MeV);
+  
+  fParticleGun->SetParticleEnergy(1.5*MeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

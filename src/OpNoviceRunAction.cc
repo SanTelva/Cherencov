@@ -35,16 +35,23 @@
 #include "G4Timer.hh"
 
 #include "OpNoviceRunAction.hh"
-
+#include "G4AccumulableManager.hh"
 #include "G4Run.hh"
+#include "G4Event.hh"
+#include "G4RunManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+extern FILE *fp2;
+extern G4double edepSi;
 OpNoviceRunAction::OpNoviceRunAction()
  : G4UserRunAction(),
-   fTimer(0)
+   fTimer(0),
+   fPath(0.)
 {
   fTimer = new G4Timer;
+  G4AccumulableManager* accManager = G4AccumulableManager::Instance();
+  accManager -> RegisterAccumulable(fPath);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -58,6 +65,9 @@ OpNoviceRunAction::~OpNoviceRunAction()
 
 void OpNoviceRunAction::BeginOfRunAction(const G4Run* aRun)
 {
+  edepSi = 0;
+  G4AccumulableManager* accManager = G4AccumulableManager::Instance();
+  accManager -> Reset();
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
   fTimer->Start();
 }
@@ -66,9 +76,28 @@ void OpNoviceRunAction::BeginOfRunAction(const G4Run* aRun)
 
 void OpNoviceRunAction::EndOfRunAction(const G4Run* aRun)
 {
-  fTimer->Stop();
-  G4cout << "number of event = " << aRun->GetNumberOfEvent()
-         << " " << *fTimer << G4endl;
+    G4AccumulableManager* accManager = G4AccumulableManager::Instance();
+    accManager -> Merge();
+    if (IsMaster())
+  {
+    G4cout
+     << G4endl
+     << "--------------------End of Global Run-----------------------"
+     << G4endl;
+  }
+    fTimer->Stop();
+//fprintf(fp2, "Total energy deposit from this run is %7.6e", edepSi/MeV);
+//  G4cout << "number of event = " << aRun->GetNumberOfEvent()
+//         << " " << *fTimer << G4endl;
 }
 
+void OpNoviceRunAction::AddEdep(G4double edep)
+{
+    edepSi += edep;
+}
+
+void OpNoviceRunAction::AddPath(G4double path)
+{
+    fPath += path;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

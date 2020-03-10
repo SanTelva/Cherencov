@@ -83,8 +83,8 @@ namespace {
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-  FILE *fp2;
-
+  FILE *fp2, *fp3;
+  G4double edepSi = 0;
 
 int main(int argc,char** argv)
 {
@@ -95,8 +95,8 @@ int main(int argc,char** argv)
     return 1;
   }
 
-  fp2=fopen( "particles-tracks","a");
-fprintf(fp2," \n   cerenkov detector: \n"); 
+  fp2=fopen( "particles-tracks","w");
+  fp3=fopen("logoutput", "w");
 
   G4String macro;
   G4String session;

@@ -55,7 +55,8 @@
 AROpNovDetectorConstruction::AROpNovDetectorConstruction()
  : G4VUserDetectorConstruction()
 {
-  fExpHall_x = fExpHall_y = fExpHall_z = 50.0*cm;
+//  fExpHall_x = fExpHall_y = fExpHall_z = 25.0*cm;
+    fExpHall_x = fExpHall_y = fExpHall_z = 10.0*cm;
 //  fTank_x    = fTank_y    = fTank_z    =  5.0*m;
 //  fBubble_x  = fBubble_y  = fBubble_z  =  0.5*m;
 
@@ -92,202 +93,111 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
   air->AddElement(N, 70.*perCent);
   air->AddElement(O, 30.*perCent);
 
-// Water
-//
-/*  G4Element* H = new G4Element("Hydrogen", "H", z=1 , a=1.01*g/mole);
-
-  G4Material* water = new G4Material("Water", density= 1.0*g/cm3, nelements=2);
-  water->AddElement(H, 2);
-  water->AddElement(O, 1);
-*/
-
-//
 
 // Quartz
 //
   
-  G4Material* alum = new G4Material("Aluminium", density= 2.693*g/cm3, nelements=1);
   G4Material* quartz = new G4Material("Quartz", density= 2.210*g/cm3, nelements=2);
   quartz->AddElement(Si, 1);
   quartz->AddElement(O, 2);
+
+
+
+//Aluminium
+  G4Material* alum = new G4Material("Aluminium", density= 2.693*g/cm3, nelements=1);
   alum->AddElement(Al, 1);
 //
   const G4int NUMENTRIES = 2;
+   const G4int nEntries = 2;
   // Energy bins
   G4double X_RINDEX[NUMENTRIES] = {h_Planck*c_light/lambda_max, h_Planck*c_light/lambda_min} ; 
 
 
 // ------------ Generate & Add Material Properties Table ------------
 //
-  G4double photonEnergy[] =
-            { 2.034*eV, 2.068*eV, 2.103*eV, 2.139*eV,
-              2.177*eV, 2.216*eV, 2.256*eV, 2.298*eV,
-              2.341*eV, 2.386*eV, 2.433*eV, 2.481*eV,
-              2.532*eV, 2.585*eV, 2.640*eV, 2.697*eV,
-              2.757*eV, 2.820*eV, 2.885*eV, 2.954*eV,
-              3.026*eV, 3.102*eV, 3.181*eV, 3.265*eV,
-              3.353*eV, 3.446*eV, 3.545*eV, 3.649*eV,
-              3.760*eV, 3.877*eV, 4.002*eV, 4.136*eV };
+  G4double ephoton[NUMENTRIES] = {2.034*eV, 10.136*eV};
 
-  const G4int nEntries = sizeof(photonEnergy)/sizeof(G4double);
+//  G4double photonEnergy[NUMENTRIES] =
+//            { 2.034*eV, 10.136*eV};
 
-//
-// Water
-//
-  G4double refractiveIndex1[] =
-            { 1.5505, 1.542741,  1.5285, 1.5086,  1.4997,
-              1.4983, 1.4971, 1.4962, 1.4951,
-              1.4942, 1.4932,  1.4924, 1.4916,  1.491,
-              1.4918, 1.4901,  1.4893, 1.4885,  1.4879,
-              1.487,   1.486,
-              1.4856,  1.4792, 1.4748,  1.4696, 1.4630,
-              1.4607, 1.4585, 1.458,   1.4570, 1.455,
-              1.4547};
+//  const G4int nEntries = sizeof(ephoton)/sizeof(G4double);
 
-  assert(sizeof(refractiveIndex1) == sizeof(photonEnergy));
+// Alum
+  G4MaterialPropertiesTable* myPT1 = new G4MaterialPropertiesTable();
 
-  G4double absorption[] =
-           {3.448*m,  4.082*m,  6.329*m,  9.174*m, 12.346*m, 13.889*m,
-           15.152*m, 17.241*m, 18.868*m, 20.000*m, 26.316*m, 35.714*m,
-           45.455*m, 47.619*m, 52.632*m, 52.632*m, 55.556*m, 52.632*m,
-           52.632*m, 47.619*m, 45.455*m, 41.667*m, 37.037*m, 33.333*m,
-           30.000*m, 28.500*m, 27.000*m, 24.500*m, 22.000*m, 19.500*m,
-           17.500*m, 14.500*m };
+// Air
+  G4MaterialPropertiesTable* myPT2 = new G4MaterialPropertiesTable();
 
-  assert(sizeof(absorption) == sizeof(photonEnergy));
+//Quartz (13/07/2019)  
+   G4MaterialPropertiesTable* myPT3 = new G4MaterialPropertiesTable();
 
-  G4double scintilFast[] =
-            { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00 };
+//Cone (13/07/2019)  
+   G4MaterialPropertiesTable* myPT4 = new G4MaterialPropertiesTable();
 
-  assert(sizeof(scintilFast) == sizeof(photonEnergy));
-
-  G4double scintilSlow[] =
-            { 0.01, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00,
-              7.00, 8.00, 9.00, 8.00, 7.00, 6.00, 4.00,
-              3.00, 2.00, 1.00, 0.01, 1.00, 2.00, 3.00,
-              4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 8.00,
-              7.00, 6.00, 5.00, 4.00 };
-
-  assert(sizeof(scintilSlow) == sizeof(photonEnergy));
-
-  G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
-
-  myMPT1->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
-        ->SetSpline(true);
-  myMPT1->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
-        ->SetSpline(true);
-  myMPT1->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
-        ->SetSpline(true);
-  myMPT1->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
-        ->SetSpline(true);
-
-  myMPT1->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
-  myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
-  myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
-  myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
-  myMPT1->AddConstProperty("YIELDRATIO",0.8);
-
-  G4double energy_water[] = {
-     1.56962*eV, 1.58974*eV, 1.61039*eV, 1.63157*eV,
-     1.65333*eV, 1.67567*eV, 1.69863*eV, 1.72222*eV,
-     1.74647*eV, 1.77142*eV, 1.7971 *eV, 1.82352*eV,
-     1.85074*eV, 1.87878*eV, 1.90769*eV, 1.93749*eV,
-     1.96825*eV, 1.99999*eV, 2.03278*eV, 2.06666*eV,
-     2.10169*eV, 2.13793*eV, 2.17543*eV, 2.21428*eV,
-     2.25454*eV, 2.29629*eV, 2.33962*eV, 2.38461*eV,
-     2.43137*eV, 2.47999*eV, 2.53061*eV, 2.58333*eV,
-     2.63829*eV, 2.69565*eV, 2.75555*eV, 2.81817*eV,
-     2.88371*eV, 2.95237*eV, 3.02438*eV, 3.09999*eV,
-     3.17948*eV, 3.26315*eV, 3.35134*eV, 3.44444*eV,
-     3.54285*eV, 3.64705*eV, 3.75757*eV, 3.87499*eV,
-     3.99999*eV, 4.13332*eV, 4.27585*eV, 4.42856*eV,
-     4.59258*eV, 4.76922*eV, 4.95999*eV, 5.16665*eV,
-     5.39129*eV, 5.63635*eV, 5.90475*eV, 6.19998*eV
-  };
-
-/*  const G4int numentries_water = sizeof(energy_water)/sizeof(G4double);
-
-  //assume 100 times larger than the rayleigh scattering for now.
-  G4double mie_water[] = {
-     167024.4*m, 158726.7*m, 150742  *m,
-     143062.5*m, 135680.2*m, 128587.4*m,
-     121776.3*m, 115239.5*m, 108969.5*m,
-     102958.8*m, 97200.35*m, 91686.86*m,
-     86411.33*m, 81366.79*m, 76546.42*m,
-     71943.46*m, 67551.29*m, 63363.36*m,
-     59373.25*m, 55574.61*m, 51961.24*m,
-     48527.00*m, 45265.87*m, 42171.94*m,
-     39239.39*m, 36462.50*m, 33835.68*m,
-     31353.41*m, 29010.30*m, 26801.03*m,
-     24720.42*m, 22763.36*m, 20924.88*m,
-     19200.07*m, 17584.16*m, 16072.45*m,
-     14660.38*m, 13343.46*m, 12117.33*m,
-     10977.70*m, 9920.416*m, 8941.407*m,
-     8036.711*m, 7202.470*m, 6434.927*m,
-     5730.429*m, 5085.425*m, 4496.467*m,
-     3960.210*m, 3473.413*m, 3032.937*m,
-     2635.746*m, 2278.907*m, 1959.588*m,
-     1675.064*m, 1422.710*m, 1200.004*m,
-     1004.528*m, 833.9666*m, 686.1063*m
-  };
-
-  assert(sizeof(mie_water) == sizeof(energy_water));
-
-  // gforward, gbackward, forward backward ratio
-  G4double mie_water_const[3]={0.99,0.99,0.8};
-
-  myMPT1->AddProperty("MIEHG",energy_water,mie_water,numentries_water)
-        ->SetSpline(true);
-  myMPT1->AddConstProperty("MIEHG_FORWARD",mie_water_const[0]);
-  myMPT1->AddConstProperty("MIEHG_BACKWARD",mie_water_const[1]);
-  myMPT1->AddConstProperty("MIEHG_FORWARD_RATIO",mie_water_const[2]);
-
-  G4cout << "Water G4MaterialPropertiesTable" << G4endl;
-  myMPT1->DumpTable();
-
-  water->SetMaterialPropertiesTable(myMPT1);
-*/
-  
-//Quartz (13/07/2019)  from advanced/air_shower
   
   // Refractive index 
 
   const G4int N_RINDEX_QUARTZ = 2 ;
   G4double X_RINDEX_QUARTZ[N_RINDEX_QUARTZ] = {h_Planck*c_light/lambda_max, h_Planck*c_light/lambda_min} ; 
   G4double RINDEX_QUARTZ[N_RINDEX_QUARTZ] = {1.54, 1.54};
+//  G4double refractiveIndex[num] = {1.35, 1.40};
 
-  G4MaterialPropertiesTable *myMPT3 = new G4MaterialPropertiesTable();
-  myMPT3->AddProperty("RINDEX", X_RINDEX_QUARTZ, RINDEX_QUARTZ, N_RINDEX_QUARTZ);
+  myPT3->AddProperty("RINDEX", X_RINDEX_QUARTZ, RINDEX_QUARTZ, N_RINDEX_QUARTZ);
+  quartz->SetMaterialPropertiesTable(myPT3);
+   
+  G4double absorptionSi[NUMENTRIES]      = {2.0*m, 2.7*m};  
+//  assept(sizeof(absorptionSi) == sizeof(ephoton));
 
-  quartz->SetMaterialPropertiesTable(myMPT3);
-  
-  
-//------------------------------------------
-  // Set the Birks Constant for the Water scintillator
+  G4double absorptionAl[NUMENTRIES]      = {0.00001*m, 0.00001*m};  
+//  assept(sizeof(absorptionAl) == sizeof(ephoton));
+  myPT3->AddProperty("ABSLENGTH", ephoton, absorptionSi, nEntries);
 
-//  water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+//OpticalQuartzSurface
 
-//
+  G4double reflectivity[NUMENTRIES] = {0.999, 0.999};
+  G4double specularLobe[NUMENTRIES]    = {0.3, 0.3};
+  G4double specularSpike[NUMENTRIES]   = {0.2, 0.2};
+  G4double backScatter[NUMENTRIES]     = {0.2, 0.2};
+
+//  G4double absorption[num]      = {0.001, 0.001};
+//  G4double absorptionSi[num]      = {0.999, 0.999};
+
+
+//  myST3->AddProperty("RINDEX",                ephoton, refractiveIndex,NUMENTRIES );
+  myPT3->AddProperty("SPECULARLOBECONSTANT",  ephoton, specularLobe,   NUMENTRIES );
+  myPT3->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,  NUMENTRIES );
+  myPT3->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,    NUMENTRIES );
+  myPT3->AddProperty("REFLECTIVITY",          ephoton, reflectivity,   NUMENTRIES );
+  myPT3->AddProperty("ABSORPTION",            ephoton, absorptionSi, NUMENTRIES );    
+
+
+  G4cout << "quartz G4MaterialPropertiesTable" << G4endl;
+  myPT3->DumpTable();
+  quartz->SetMaterialPropertiesTable(myPT3);
+
+
+//---------------
 // Air
 //
-  G4double refractiveIndex2[] =
-            { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-              1.00, 1.00, 1.00, 1.00 };
 
-  G4MaterialPropertiesTable* myMPT2 = new G4MaterialPropertiesTable();
-  myMPT2->AddProperty("RINDEX", photonEnergy, refractiveIndex2, nEntries);
+  G4double refractiveIndex2[] = { 1.00, 1.00};
+
+  myPT2->AddProperty("RINDEX",ephoton, refractiveIndex2, nEntries);
 
   G4cout << "Air G4MaterialPropertiesTable" << G4endl;
-  myMPT2->DumpTable();
+  myPT2->DumpTable();
 
-  air->SetMaterialPropertiesTable(myMPT2);
+  air->SetMaterialPropertiesTable(myPT2);
+
+
+//---------------
+// Alum
+//
+
+  G4cout << "Aluminium Surface G4MaterialPropertiesTable" << G4endl;
+  myPT1->AddProperty("ABSORPTION",  ephoton, absorptionAl,   NUMENTRIES );
+  myPT1->DumpTable();
+  alum->SetMaterialPropertiesTable(myPT1);
 
 //
 // ------------- Volumes --------------
@@ -304,32 +214,7 @@ G4cout << " World 1  " << G4endl;
     = new G4PVPlacement(0,G4ThreeVector(),expHall_log,"World",0,false,0);
 G4cout << " World 2  " << G4endl;
 
-// The Water Tank
-//
-// /  G4Box* waterTank_box = new G4Box("Tank",fTank_x,fTank_y,fTank_z);
 
-// /  G4LogicalVolume* waterTank_log
-// /    = new G4LogicalVolume(waterTank_box,water,"Tank",0,0,0);
-
-// /  G4VPhysicalVolume* waterTank_phys
-// /    = new G4PVPlacement(0,G4ThreeVector(),waterTank_log,"Tank",
-// /                        expHall_log,false,0);
-
-// The Air Bubble
-//
-// /  G4Box* bubbleAir_box = new G4Box("Bubble",fBubble_x,fBubble_y,fBubble_z);
-
-// /  G4LogicalVolume* bubbleAir_log
-// /    = new G4LogicalVolume(bubbleAir_box,air,"Bubble",0,0,0);
-
-//G4VPhysicalVolume* bubbleAir_phys =
-// /      new G4PVPlacement(0,G4ThreeVector(0,2.5*m,0),bubbleAir_log,"Bubble",
-// /                        waterTank_log,false,0);
-
-
-//-----------------------------
-// The Quartz Radiator
-//   fSiOrad_x = 20*mm; fSiOrad_y = 20*mm; fSiOrad_z = 30.0*mm;
 G4cout << " QRad 1 " << G4endl;
 
   
@@ -338,9 +223,9 @@ G4cout << " QRad 1 " << G4endl;
   G4double shape1_rminb =  0.*cm, shape1_rmaxb = 1.*cm;
   G4double shape1_rmina =  0.*cm, shape1_rmaxa = 2.*cm;
   G4double shape1_hz = 1*cm;
-  G4double wrapWidth = 0.2*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
   G4ThreeVector pos1 = G4ThreeVector(0, 0, 3*shape1_hz);
+
   G4Cons* consSolid =    
     new G4Cons("Cons", 
     shape1_rmina, shape1_rmaxa, shape1_rminb, shape1_rmaxb, shape1_hz,
@@ -359,6 +244,30 @@ G4cout << " QRad 1 " << G4endl;
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+
+  G4double shape1_rminb_w =  1.*cm, shape1_rmaxb_w = 1.1*cm;
+  G4double shape1_rmina_w =  2.*cm, shape1_rmaxa_w = 2.1*cm;
+
+  G4Cons* wrapSolid_c =    
+    new G4Cons("AlumWrap_c",                      //its name
+    shape1_rmina_w, shape1_rmaxa_w, shape1_rminb_w, shape1_rmaxb_w, shape1_hz,
+    shape1_phimin, shape1_phimax);        //its size
+                
+  G4LogicalVolume* wrapLogical_c =                         
+    new G4LogicalVolume(wrapSolid_c,         //its solid
+                        alum,          //its material
+                        "AlumWrap_c");           //its name
+               
+  G4VPhysicalVolume* wrapPhys_c =  new G4PVPlacement(0,                       //no rotation
+                    pos1,                    //at position
+                    wrapLogical_c,             //its logical volume
+                    "AlumWrap_c",                //its name
+                    expHall_log,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+
 
   //     
   // Shape 2
@@ -387,65 +296,62 @@ G4cout << " QRad 1 " << G4endl;
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  G4Tubs* wrapTubeSolid =    
-    new G4Tubs("AlumwrapTube",                      //its name
-              shape1_rmaxa+0.05*cm, shape1_rmaxa+wrapWidth, 2*shape1_hz, 
+  G4Tubs* wrapSolid =    
+    new G4Tubs("AlumWrap",                      //its name
+              shape1_rmaxa+0.005*cm, shape1_rmaxa+0.01*cm, 2*shape1_hz, 
                shape1_phimin, shape1_phimax); //its size
                 
-  G4LogicalVolume* wrapTubeLogical =                         
-    new G4LogicalVolume(wrapTubeSolid,         //its solid
+  G4LogicalVolume* wrapLogical =                         
+    new G4LogicalVolume(wrapSolid,         //its solid
                         alum,          //its material
-                        "AlumWrapTubeLog");           //its name
+                        "AlumWrap");           //its name
                
-  G4VPhysicalVolume* wrapTubePhys =  new G4PVPlacement(0,                       //no rotation
+  G4VPhysicalVolume* wrapPhys =  new G4PVPlacement(0,                       //no rotation
                     pos2,                    //at position
-                    tubeLogical,             //its logical volume
-                    "AlumwrapTube",                //its name
+                    wrapLogical,             //its logical volume
+                    "AlumWrap",                //its name
                     expHall_log,                //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
+//------------------
 
-// conical-shaped Aluminium wrapTube    
-
-
-  G4Cons* wrapConsSolid =    
-    new G4Cons("wrapCons", 
-    shape1_rmaxa+0.05*cm, shape1_rmaxa+wrapWidth, shape1_rmaxb+0.05*cm, shape1_rmaxb+wrapWidth, shape1_hz,
-    shape1_phimin, shape1_phimax);
-                      
-  G4LogicalVolume* wrapConsLogical =                         
-    new G4LogicalVolume(wrapConsSolid,         //its solid
-                        alum,          //its material
-                        "wrapCons");           //its name
-
-  G4VPhysicalVolume* wrapConsPhys = new G4PVPlacement(0,                       //no rotation
-                    pos1,                    //at position
-                    wrapConsLogical,             //its logical volume
-                    "wrapCons",                //its name
-                    expHall_log,                //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
+//---------------
 
 
-  /*G4Box* quartzRad_box = new G4Box("QRad",fSiOrad_x,fSiOrad_y,fSiOrad_z);
+ G4OpticalSurface* opAlumSurface = new G4OpticalSurface("AlumSurface");
+ opAlumSurface->SetType(dielectric_metal);
+ opAlumSurface->SetFinish(polished);
+ opAlumSurface->SetModel(glisur);
 
-  G4LogicalVolume* quartzRad_log
-    = new G4LogicalVolume(quartzRad_box,quartz,"QRad_l",0,0,0);
+  G4LogicalBorderSurface* alumSurface =
+          new G4LogicalBorderSurface("AlumSurface",
+                            wrapPhys,expHall_phys,opAlumSurface);
 
-  G4VPhysicalVolume* quartzRad_phys
-    = new G4PVPlacement(0,G4ThreeVector(),quartzRad_log,"QRad_f",
-//                   quartzRad_log,false,0);
-                    expHall_log,false,0);                        
+  G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
+        (alumSurface->GetSurface(wrapPhys,expHall_phys)->
+                                                       GetSurfaceProperty());
+  if (opticalSurface) opticalSurface->DumpInfo();
 
-*/
-G4cout << " QRad 2 " << G4endl;
+
+ G4OpticalSurface* opAlumSurface_c = new G4OpticalSurface("AlumSurface_c");
+ opAlumSurface_c->SetType(dielectric_metal);
+ opAlumSurface_c->SetFinish(polished);
+ opAlumSurface_c->SetModel(glisur);
+
+  G4LogicalBorderSurface* alumSurface_c =
+          new G4LogicalBorderSurface("AlumSurface_c",
+                            wrapPhys_c,expHall_phys,opAlumSurface_c);
+
+  G4OpticalSurface* opticalSurface_c = dynamic_cast <G4OpticalSurface*>
+        (alumSurface_c->GetSurface(wrapPhys_c,expHall_phys)->
+                                                       GetSurfaceProperty());
+  if (opticalSurface) opticalSurface->DumpInfo();
 
 
 
-// 14/10/2019
+
 // Si radiator
 //
   G4OpticalSurface* opSiSurface = new G4OpticalSurface("SiSurface");
@@ -454,142 +360,19 @@ G4cout << " QRad 2 " << G4endl;
   opSiSurface->SetModel(glisur);
 
   G4LogicalBorderSurface* SiSurface =
-          new G4LogicalBorderSurface("SiSurface", tubePhys, wrapTubePhys  , opSiSurface);
+          new G4LogicalBorderSurface("SiSurface",
+                             tubePhys,expHall_phys, opSiSurface);
 
-//G4OpticalSurface*  opticalSurface = dynamic_cast <G4OpticalSurface*>
-//        (SiSurface->GetSurface(tubeLogical)->GetSurfaceProperty());
-//  if (opticalSurface) opticalSurface->DumpInfo();
+   opticalSurface = dynamic_cast <G4OpticalSurface*>
+        (SiSurface->GetSurface(tubePhys,expHall_phys)->
+                                                        GetSurfaceProperty());
+  if (opticalSurface) opticalSurface->DumpInfo();
 // 14/10/2019
 
+G4cout << " QRad 2 " << G4endl;
+// ------------- Surfaces --------------
 
 
-
-
-
-// 14/07/2019 Оптические свойства кварца просто скопированы , нужно ввести правильные
-
-  G4OpticalSurface* opAlumSurface = new G4OpticalSurface("AlumSurface");
-//  opWaterSurface->SetType(dielectric_dielectric);
-//  opWaterSurface->SetFinish(ground);
-//  opWaterSurface->SetModel(unified);
-  opAlumSurface->SetType(dielectric_metal);
-  opAlumSurface->SetFinish(ground);
-  opAlumSurface->SetModel(unified);
-
-  G4LogicalSkinSurface* alumSurface =
-          new G4LogicalSkinSurface("AlumSurface",
-                            wrapTubeLogical,opAlumSurface);
-
-// 14/10/2019
-//  G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
-//     opticalSurface = dynamic_cast <G4OpticalSurface*>
-//        (alumSurface->GetSurface(wrapTubePhys,expHall_phys)->
-//                                                       GetSurfaceProperty());
-//  if (opticalSurface) opticalSurface->DumpInfo();
-//------------------
-
-//
-// Generate & Add Material Properties Table attached to the optical surfaces
-//
-  const G4int num = 20;
-  G4double ephoton[num] = 
-  {1.907*eV,1.959*eV,2.066*eV,2.101*eV,
-   2.330*eV,2.540*eV,3.064*eV,3.392*eV,
-   3.679*eV,4.025*eV,4.661*eV,4.991*eV,
-   5.636*eV,6.013*eV,6.200*eV,6.386*eV,
-   6.411*eV,6.424*eV,6.526*eV,6.706*eV};
-
-  //OpticalWaterSurface
-/*  G4double refractiveIndex[num] = {1.35, 1.40};
-  G4double specularLobe[num]    = {0.3, 0.3};
-  G4double specularSpike[num]   = {0.2, 0.2};
-  G4double backScatter[num]     = {0.2, 0.2};
-
-  G4MaterialPropertiesTable* myST1 = new G4MaterialPropertiesTable();
-
-  myST1->AddProperty("RINDEX",                ephoton, refractiveIndex, num);
-  myST1->AddProperty("SPECULARLOBECONSTANT",  ephoton, specularLobe,    num);
-  myST1->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
-  myST1->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
-
-  G4cout << "Water Surface G4MaterialPropertiesTable" << G4endl;
-  myST1->DumpTable();
-*/
-
-// добавляем кварц, просто копируем -- УТОЧНИТЬ!!!
-
-  //OpticalQuartzSurface
-  G4double refractiveIndex[num] = 
-  {1.575131,1.5657,1.560841,1.560208,
-   1.559012,1.5505,1.542741,1.5285,
-   1.5086,1.4997,1.4856,1.4792,
-   1.4748,1.4696,1.463,1.4607,
-   1.4585,1.458,1.457,1.455
-};
-  //G4double reflectivity[num] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-  //     0., 0., 0.};
-  G4double reflectivity[num] = {1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1.};
-  G4double reflectivity[num] = {0.8       , 0.80263158, 0.80526316, 0.80789474, 0.81052632,
-       0.81315789, 0.81578947, 0.81842105, 0.82105263, 0.82368421,
-       0.82631579, 0.82894737, 0.83157895, 0.83421053, 0.83684211,
-       0.83947368, 0.84210526, 0.84473684, 0.84736842, 0.85     };
-  G4double specularLobe[num]    = {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,
-       0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3};
-  G4double specularSpike[num]   = {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,
-       0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3};
-  G4double backScatter[num]     = {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,
-       0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3};
-
-  //G4double absorptionAl[num] = {1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-   //    1., 1., 1.};
-  /*G4double absorptionSi[num]      = {0.95      , 0.94736842, 0.94473684, 0.94210526, 0.93947368,
-       0.93684211, 0.93421053, 0.93157895, 0.92894737, 0.92631579,
-       0.92368421, 0.92105263, 0.91842105, 0.91578947, 0.91315789,
-       0.91052632, 0.90789474, 0.90526316, 0.90263158, 0.9 };*/
-  G4double absorptionAl[num]      = {0.15      , 0.15052632, 0.15105263, 0.15157895, 0.15210526,
-       0.15263158, 0.15315789, 0.15368421, 0.15421053, 0.15473684,
-       0.15526316, 0.15578947, 0.15631579, 0.15684211, 0.15736842,
-       0.15789474, 0.15842105, 0.15894737, 0.15947368, 0.16 };  
-  //G4double absorptionAl[num] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-  //     0., 0., 0.};
-  G4MaterialPropertiesTable* myST3 = new G4MaterialPropertiesTable();
-  //myST3->AddProperty("RINDEX",                ephoton, refractiveIndex, num);
-  myST3->AddProperty("SPECULARLOBECONSTANT",  ephoton, specularLobe,    num);
-  myST3->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
-  myST3->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
-  myST3->AddProperty("REFLECTIVITY",          ephoton, reflectivity,    num);
-  myST3->AddProperty("ABSLENGTH",             ephoton, absorptionAl,    num);
-  G4cout << "Aluminium Surface G4MaterialPropertiesTable" << G4endl;
-  opAlumSurface -> SetMaterialPropertiesTable(myST3);
-  myST3->DumpTable();
-
-  G4MaterialPropertiesTable* quMPT = new G4MaterialPropertiesTable();
-  quMPT->AddProperty("RINDEX",                ephoton, refractiveIndex, num);
-  quMPT->AddProperty("SPECULARLOBECONSTANT",  ephoton, specularLobe,    num);
-  quMPT->AddProperty("SPECULARSPIKECONSTANT", ephoton, specularSpike,   num);
-  quMPT->AddProperty("BACKSCATTERCONSTANT",   ephoton, backScatter,     num);
-  quMPT->AddProperty("ABSLENGTH",             ephoton, absorptionAl,    num);
-  quMPT->AddProperty("REFLECTIVITY",          ephoton, reflectivity,    num);
-  opSiSurface -> SetMaterialPropertiesTable(quMPT);
-  quMPT -> DumpTable();
-//  opWaterSurface->SetMaterialPropertiesTable(myST1);
-
-//OpticalAirSurface
-/* 
-  G4double reflectivity[num] = {0.3, 0.5};
-  G4double efficiency[num]   = {0.8, 1.0};
-
-  G4MaterialPropertiesTable *myST2 = new G4MaterialPropertiesTable();
-
-  myST2->AddProperty("REFLECTIVITY", ephoton, reflectivity, num);
-  myST2->AddProperty("EFFICIENCY",   ephoton, efficiency,   num);
-
-  G4cout << "Air Surface G4MaterialPropertiesTable" << G4endl;
-  myST2->DumpTable();
-
-  opAirSurface->SetMaterialPropertiesTable(myST2);
-*/
 
 //always return the physical World
   return expHall_phys;

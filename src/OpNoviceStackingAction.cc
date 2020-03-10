@@ -38,12 +38,14 @@
 #include "G4ParticleTypes.hh"
 #include "G4Track.hh"
 #include "G4ios.hh"
-
+#include "G4SystemOfUnits.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+extern G4double edepSi;
 
 OpNoviceStackingAction::OpNoviceStackingAction()
   : G4UserStackingAction(),
-    fScintillationCounter(0), fCerenkovCounter(0)
+    fScintillationCounter(0), fCerenkovCounter(0), fExtruderPhotons(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -64,6 +66,8 @@ OpNoviceStackingAction::ClassifyNewTrack(const G4Track * aTrack)
         fScintillationCounter++;
       if(aTrack->GetCreatorProcess()->GetProcessName() == "Cerenkov")
         fCerenkovCounter++;
+      if(aTrack->GetPosition()[2] == 40.0)
+        fExtruderPhotons++;
     }
   }
   return fUrgent;
@@ -73,10 +77,10 @@ OpNoviceStackingAction::ClassifyNewTrack(const G4Track * aTrack)
 
 void OpNoviceStackingAction::NewStage()
 {
-  G4cout << "Number of Scintillation photons produced in this event : "
-         << fScintillationCounter << G4endl;
   G4cout << "Number of Cerenkov photons produced in this event : "
          << fCerenkovCounter << G4endl;
+  G4cout << "Total energy deposit by this event: "
+	 << edepSi/MeV << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -85,6 +89,7 @@ void OpNoviceStackingAction::PrepareNewEvent()
 {
   fScintillationCounter = 0;
   fCerenkovCounter = 0;
+  fExtruderPhotons = 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -52,6 +52,7 @@ class OpNoviceStackingAction : public G4UserStackingAction
   private:
     G4int fScintillationCounter;
     G4int fCerenkovCounter;
+    G4int fExtruderPhotons;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
