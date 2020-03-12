@@ -88,7 +88,6 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
     G4StepPoint* MyPreStepPoint=step->GetPreStepPoint();
     G4StepPoint* MyPostStepPoint=step->GetPostStepPoint();
 
-    G4double MyKinEn = MyPreStepPoint->GetKineticEnergy();
     G4double MyKinEnPre = MyPreStepPoint->GetKineticEnergy();
     G4double MyKinEnPost = MyPostStepPoint->GetKineticEnergy();    
 
@@ -109,9 +108,12 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
 //  G4cout << edepStep << G4endl;
     
  if (ParticleName != "opticalphoton" && zz >= -20.0){
-    fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\t",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
-    if (MyKinEnPre == 0.0) {fprintf(fp2, "STOP");}
-    fprintf(fp2, "\n");
+    fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
+    //if (MyKinEnPre == 0.0 && MyKinEnPost == 0.0) {
+//	fprintf(fp2, "\nSTOP");
+	//fprintf(fp3, "(%4.3e %4.3e %4.3e)\t", xx, yy, zz);
+	//}
+    //fprintf(fp2, "\n");
  }
 
   if (ParticleName == "opticalphoton" && zz == 40.0) {  
