@@ -71,7 +71,6 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
 
     G4double x,y, z;
     G4double xx, yy, zz;
- 
 // fprintf(fp2," SteppingAction 1 \n");
  
   G4Track* track = step->GetTrack();
@@ -109,8 +108,11 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
   if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4)) edepSi += edepStep;
 //  G4cout << edepStep << G4endl;
     
- if (ParticleName != "opticalphoton" && zz >= -20.0) 
- fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
+ if (ParticleName != "opticalphoton" && zz >= -20.0){
+    fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\t",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
+    if (MyKinEnPre == 0.0) {fprintf(fp2, "STOP");}
+    fprintf(fp2, "\n");
+ }
 
   if (ParticleName == "opticalphoton" && zz == 40.0) {  
   fprintf(fp2,"opticalphoton\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyEnPre/eV,xx,yy,zz,MyEnPost/eV,MyTrackID);

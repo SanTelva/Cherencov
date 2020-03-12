@@ -42,6 +42,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 extern G4double edepSi;
+extern FILE *fp3;
+//extern G4double xs, ys, zs;
 
 OpNoviceStackingAction::OpNoviceStackingAction()
   : G4UserStackingAction(),
@@ -81,6 +83,7 @@ void OpNoviceStackingAction::NewStage()
          << fCerenkovCounter << G4endl;
   G4cout << "Total energy deposit by this event: "
 	 << edepSi/MeV << G4endl;
+  fprintf(fp3, "%7.6e\t%3d\t\n", edepSi/MeV, fCerenkovCounter);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -90,6 +93,7 @@ void OpNoviceStackingAction::PrepareNewEvent()
   fScintillationCounter = 0;
   fCerenkovCounter = 0;
   fExtruderPhotons = 0;
+  edepSi = 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
