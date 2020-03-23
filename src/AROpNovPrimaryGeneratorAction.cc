@@ -57,7 +57,8 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
   //default kinematic
   //
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleDefinition* particle = particleTable->FindParticle("e-");
+//  G4ParticleDefinition* particle = particleTable->FindParticle("e-");
+  G4ParticleDefinition* particle = particleTable->FindParticle("proton");  
 
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleTime(0.0*ns);
@@ -65,7 +66,12 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
 //  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   
-  fParticleGun->SetParticleEnergy(1.5*MeV);
+//  fParticleGun->SetParticleEnergy(1.5*MeV);
+//  fParticleGun->SetParticleEnergy(15.0*MeV);  
+//  fParticleGun->SetParticleEnergy(400.0*MeV);    
+//  fParticleGun->SetParticleEnergy(100.0*MeV);      
+//  fParticleGun->SetParticleEnergy(200.0*MeV);        
+  fParticleGun->SetParticleEnergy(300.0*MeV);          
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

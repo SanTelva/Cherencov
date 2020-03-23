@@ -97,7 +97,7 @@ int main(int argc,char** argv)
 
   fp2=fopen( "particles-tracks","w");
   fp3=fopen("logoutput", "w");
-  fprintf(fp3, "N\tEdep\tCerCount\n");
+  fprintf(fp3, "Run\tEdep\tCerCount\n");
   G4String macro;
   G4String session;
 #ifdef G4MULTITHREADED

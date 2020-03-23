@@ -104,9 +104,11 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
 
  
   G4double edepStep = step -> GetTotalEnergyDeposit();
-  if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4)) edepSi += edepStep;
-//  G4cout << edepStep << G4endl;
-    
+  if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4.0)) {
+     edepSi += edepStep;
+
+//    fprintf(fp3, "  %d  %7.6e  %7.6e\n",eventNumber, edepStep, edepSi);
+    }
  if (ParticleName != "opticalphoton" && zz >= -20.0){
     fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
     //if (MyKinEnPre == 0.0 && MyKinEnPost == 0.0) {
