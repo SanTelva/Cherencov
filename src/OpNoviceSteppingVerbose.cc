@@ -104,7 +104,7 @@ void OpNoviceSteppingVerbose::StepInfo()
                             fN2ndariesAlongStepDoIt +
                             fN2ndariesPostStepDoIt;
       if(tN2ndariesTot>0){
-        G4cout << "    :----- List of 2ndaries - "
+ /*       G4cout << "    :----- List of 2ndaries - "
                << "#SpawnInStep=" << std::setw(3) << tN2ndariesTot 
                << "(Rest="  << std::setw(2) << fN2ndariesAtRestDoIt
                << ",Along=" << std::setw(2) << fN2ndariesAlongStepDoIt
@@ -113,7 +113,7 @@ void OpNoviceSteppingVerbose::StepInfo()
                << "#SpawnTotal=" << std::setw(3) << (*fSecondary).size()
                << " ---------------"
                << G4endl;
-
+*/
         for(size_t lp1=(*fSecondary).size()-tN2ndariesTot;
                         lp1<(*fSecondary).size(); lp1++){
           G4cout << "    : "
@@ -145,9 +145,9 @@ void OpNoviceSteppingVerbose::StepInfo()
 
 void OpNoviceSteppingVerbose::TrackingStarted()
 {
-
+/*
   CopyState();
-  G4int prec = G4cout.precision(3);
+  // G4int prec = G4cout.precision(3);
   if( verboseLevel > 0 ){
 
     G4cout << std::setw( 5) << "Step#"      << " "
@@ -178,7 +178,7 @@ void OpNoviceSteppingVerbose::TrackingStarted()
     }
     G4cout << "    initStep" << G4endl;
   }
-  G4cout.precision(prec);
-}
+  // G4cout.precision(prec); */
+} 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
