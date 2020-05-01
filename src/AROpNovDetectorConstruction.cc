@@ -101,7 +101,9 @@ G4VPhysicalVolume* AROpNovDetectorConstruction::Construct()
   quartz->AddElement(Si, 1);
   quartz->AddElement(O, 2);
 
-
+//Silicium
+ G4Material* si = new G4Material("Silicium", density = 2.33*g/cm3, nelements=1);
+ si->AddElement(Si, 1);
 
 //Aluminium
   G4Material* alum = new G4Material("Aluminium", density= 2.693*g/cm3, nelements=1);
@@ -314,6 +316,22 @@ G4cout << " QRad 1 " << G4endl;
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+
+ G4Tubs* SilTube1 = new G4Tubs("Silicate detector 1",
+			 0, shape1_rmaxa, 0.02*mm, 
+			 shape1_phimin, shape1_phimax);
+ G4LogicalVolume* SilTube1Logical =
+    new G4LogicalVolume(SilTube1,
+			si,
+			"First");
+G4VPhysicalVolume* Si1TubePhys = new G4PVPlacement(0, 
+			G4ThreeVector(0., 0., -45.*mm),
+			SilTube1Logical,
+			"FirstPhys",
+			expHall_log,
+			false,
+			0,
+			checkOverlaps);
 
 //------------------
 

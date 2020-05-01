@@ -114,9 +114,10 @@ void OpNoviceSteppingVerbose::StepInfo()
                << " ---------------"
                << G4endl;
 */
+
         for(size_t lp1=(*fSecondary).size()-tN2ndariesTot;
                         lp1<(*fSecondary).size(); lp1++){
-          G4cout << "    : "
+/*          G4cout << "    : "
                  << std::setw(6)
                  << G4BestUnit((*fSecondary)[lp1]->GetPosition().x(),"Length")
                  << std::setw(6)
@@ -127,7 +128,7 @@ void OpNoviceSteppingVerbose::StepInfo()
                  << G4BestUnit((*fSecondary)[lp1]->GetKineticEnergy(),"Energy")
                  << std::setw(10)
                  << (*fSecondary)[lp1]->GetDefinition()->GetParticleName();
-          G4cout << G4endl;
+          G4cout << G4endl;*/
         }
  
         G4cout << "    :-----------------------------"
@@ -140,6 +141,7 @@ void OpNoviceSteppingVerbose::StepInfo()
   }
   G4cout.precision(prec);
 }
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

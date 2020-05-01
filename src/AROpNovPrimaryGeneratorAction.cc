@@ -41,7 +41,10 @@
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
+#define  _USE_MATH_DEFINES
+#include <math.h>
 
+extern FILE *fp2;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
@@ -50,10 +53,16 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
 {
   G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
-
   //create a messenger for this class
   fGunMessenger = new OpNovicePrimaryGeneratorMessenger(this);
 
+  G4double pphi, pr, px, py, pz;
+  pphi = 2*M_PI*rand()/RAND_MAX;
+  pr = sqrt(0.5*rand()/RAND_MAX);
+  px = pr * cos(pphi);
+  py = pr * sin(pphi);
+  pz = sqrt(1-pr*pr);
+  fprintf(fp2, "%3f %3f %3f", px, py, pz); 
   //default kinematic
   //
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
@@ -65,8 +74,9 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
   fParticleGun->SetParticlePosition(G4ThreeVector(0.0*cm,0.0*cm,-5*cm));
 //  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+//    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px, py, pz));
   
-  fParticleGun->SetParticleEnergy(1.0*MeV);
+  fParticleGun->SetParticleEnergy(1.5*MeV);
 //  fParticleGun->SetParticleEnergy(15.0*MeV);  
 //  fParticleGun->SetParticleEnergy(400.0*MeV);    
 //  fParticleGun->SetParticleEnergy(100.0*MeV);      
