@@ -333,6 +333,37 @@ G4VPhysicalVolume* Si1TubePhys = new G4PVPlacement(0,
 			0,
 			checkOverlaps);
 
+G4Tubs* SilTube2 = new G4Tubs("Silicate detector 2",
+			 0, shape1_rmaxa, 0.25*mm, 
+			 shape1_phimin, shape1_phimax);
+ G4LogicalVolume* SilTube2Logical =
+    new G4LogicalVolume(SilTube2,
+			si,
+			"Second");
+G4VPhysicalVolume* Si2TubePhys = new G4PVPlacement(0, 
+			G4ThreeVector(0., 0., -21.*mm),
+			SilTube2Logical,
+			"SecondsPhys",
+			expHall_log,
+			false,
+			0,
+			checkOverlaps);
+
+G4Tubs* SilTube3 = new G4Tubs("Silicate detector 3",
+			 0, shape1_rmaxa, 0.25*mm, 
+			 shape1_phimin, shape1_phimax);
+ G4LogicalVolume* SilTube3Logical =
+    new G4LogicalVolume(SilTube3,
+			si,
+			"Third");
+G4VPhysicalVolume* Si3TubePhys = new G4PVPlacement(0, 
+			G4ThreeVector(0., 0., 41.*mm),
+			SilTube3Logical,
+			"FirstPhys",
+			expHall_log,
+			false,
+			0,
+			checkOverlaps);
 //------------------
 
 //---------------
