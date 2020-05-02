@@ -35,7 +35,6 @@
 #include "OpNovicePrimaryGeneratorMessenger.hh"
 
 #include "Randomize.hh"
-
 #include "G4Event.hh"
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
@@ -44,24 +43,31 @@
 #define  _USE_MATH_DEFINES
 #include <math.h>
 
-extern FILE *fp2;
+extern FILE *fp2, *fp3;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction(), 
    fParticleGun(0)
 {
+  G4double u1 = G4UniformRand();
+G4double u2 = G4UniformRand();
+G4double u3 = G4UniformRand();
+
+G4double ptheta = 17.5*M_PI/180*17.5*M_PI/180*u1;
+G4double pphi = 2.0*M_PI*u2;
+G4double Eprim = 1 + 10 * u3;
   G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
   //create a messenger for this class
   fGunMessenger = new OpNovicePrimaryGeneratorMessenger(this);
 
-  G4double pphi, pr, px, py, pz;
-  pphi = 2*M_PI*rand()/RAND_MAX;
-  pr = sqrt(0.5*rand()/RAND_MAX);
-  px = pr * cos(pphi);
-  py = pr * sin(pphi);
-  pz = sqrt(1-pr*pr);
+  G4double px, py, pz;
+  
+  px = cos(pphi)*sin(ptheta);
+  py = sin(pphi)*sin(ptheta);
+  pz = cos(ptheta);
+  G4cout << Eprim;
   fprintf(fp2, "%3f %3f %3f", px, py, pz); 
   //default kinematic
   //
@@ -73,10 +79,10 @@ AROpNovPrimaryGeneratorAction::AROpNovPrimaryGeneratorAction()
   fParticleGun->SetParticleTime(0.0*ns);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.0*cm,0.0*cm,-5*cm));
 //  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
-    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-//    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px, py, pz));
+//    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+    fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px, py, pz));
   
-  fParticleGun->SetParticleEnergy(1.5*MeV);
+  fParticleGun->SetParticleEnergy(Eprim);
 //  fParticleGun->SetParticleEnergy(15.0*MeV);  
 //  fParticleGun->SetParticleEnergy(400.0*MeV);    
 //  fParticleGun->SetParticleEnergy(100.0*MeV);      
@@ -90,6 +96,7 @@ AROpNovPrimaryGeneratorAction::~AROpNovPrimaryGeneratorAction()
 {
   delete fParticleGun;
   delete fGunMessenger;
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

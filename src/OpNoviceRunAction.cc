@@ -68,7 +68,6 @@ void OpNoviceRunAction::BeginOfRunAction(const G4Run* aRun)
   edepSiC = 0;
   G4AccumulableManager* accManager = G4AccumulableManager::Instance();
   accManager -> Reset();
-  G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
   fTimer->Start();
 }
 
@@ -76,15 +75,6 @@ void OpNoviceRunAction::BeginOfRunAction(const G4Run* aRun)
 
 void OpNoviceRunAction::EndOfRunAction(const G4Run* aRun)
 {
-    G4AccumulableManager* accManager = G4AccumulableManager::Instance();
-    accManager -> Merge();
-    if (IsMaster())
-  {
-    G4cout
-     << G4endl
-     << "--------------------End of Global Run-----------------------"
-     << G4endl;
-  }
     fTimer->Stop();
 //fprintf(fp2, "Total energy deposit from this run is %7.6e", edepSi/MeV);
 //  G4cout << "number of event = " << aRun->GetNumberOfEvent()

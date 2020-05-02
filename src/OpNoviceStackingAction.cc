@@ -33,7 +33,7 @@
 #include "OpNoviceStackingAction.hh"
 
 #include "G4VProcess.hh"
-
+#include "Randomize.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
 #include "G4Track.hh"
@@ -85,7 +85,7 @@ void OpNoviceStackingAction::NewStage()
          << fCerenkovCounter << G4endl;
   G4cout << "Total energy deposit by this event: "
 	 << (edepSi1+edepSi2+edepSi3+edepSiC)/MeV << G4endl;
-  fprintf(fp3, "%3d\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%3d\n", nRun, 
+  fprintf(fp3, "%3d\t%4.4e\t%4.3e\t%4.3e\t%4.3e\t%4.3e\t%3d\n", nRun, 
   edepSi1/MeV, edepSi2/MeV, edepSiC/MeV, edepSi3/MeV,
   (edepSi1+edepSi2+edepSi3+edepSiC)/MeV, fCerenkovCounter);
 }
