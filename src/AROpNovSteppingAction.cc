@@ -37,7 +37,7 @@
 #include "G4RunManager.hh"
 
 extern G4int fExtruderPhotons;
-extern G4double edepSi;
+extern G4double edepSi1, edepSi2, edepSi3, edepSiC;
 extern FILE *fp2, *fp3;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -104,11 +104,34 @@ void AROpNovSteppingAction::UserSteppingAction(const G4Step* step)
 
  
   G4double edepStep = step -> GetTotalEnergyDeposit();
-  if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4.0)) {
-     edepSi += edepStep;
-
+/*  if (zz >= -20.0 && zz <= 40.0 && (xx*xx + yy*yy <= 4.0)) {
+     edepSiC += edepStep;
 //    fprintf(fp3, "  %d  %7.6e  %7.6e\n",eventNumber, edepStep, edepSi);
-    }
+    }*/
+if ((MyPreStepPoint->GetStepStatus() == fGeomBoundary || z>=-45.02)
+                                && zz > -45.02 && zz <= -44.98){
+               edepSi1+=edepStep;
+//    fprintf(fp2," ST_AC Si1: ##### nev=  %d edepStep=%7.6e summa: endepSi1=%7.6e \n", nev, edepStep, endepSi1 );
+//        fprintf(fp2,"Si1: ###*** nev=  %d EnDepSi1[nev]=%7.6e endepSi1=%7.6e\n", nev, EnDepSi1[nev], endepSi1);
+}
+if ((MyPreStepPoint->GetStepStatus() == fGeomBoundary || z>=-21.25)
+                                && zz > -21.25 && zz <= -20.75){
+               edepSi2+=edepStep;
+//    fprintf(fp2," ST_AC Si1: ##### nev=  %d edepStep=%7.6e summa: endepSi1=%7.6e \n", nev, edepStep, endepSi1 );
+//        fprintf(fp2,"Si1: ###*** nev=  %d EnDepSi1[nev]=%7.6e endepSi1=%7.6e\n", nev, EnDepSi1[nev], endepSi1);
+}
+if ((MyPreStepPoint->GetStepStatus() == fGeomBoundary || z>=-20.0)
+                                && zz > -20.0 && zz <= 40.0){
+               edepSiC+=edepStep;
+//    fprintf(fp2," ST_AC Si1: ##### nev=  %d edepStep=%7.6e summa: endepSi1=%7.6e \n", nev, edepStep, endepSi1 );
+//        fprintf(fp2,"Si1: ###*** nev=  %d EnDepSi1[nev]=%7.6e endepSi1=%7.6e\n", nev, EnDepSi1[nev], endepSi1);
+}
+if ((MyPreStepPoint->GetStepStatus() == fGeomBoundary || z>=40.75)
+                                && zz > 40.75 && zz <= 41.25){
+               edepSi3+=edepStep;
+//    fprintf(fp2," ST_AC Si1: ##### nev=  %d edepStep=%7.6e summa: endepSi1=%7.6e \n", nev, edepStep, endepSi1 );
+//        fprintf(fp2,"Si1: ###*** nev=  %d EnDepSi1[nev]=%7.6e endepSi1=%7.6e\n", nev, EnDepSi1[nev], endepSi1);
+}
  if (ParticleName != "opticalphoton" && zz >= -20.0){
     fprintf(fp2,"particle\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%d\n",x,y,z,MyKinEnPre/MeV,xx,yy,zz,MyKinEnPost/MeV,MyTrackID);
     //if (MyKinEnPre == 0.0 && MyKinEnPost == 0.0) {

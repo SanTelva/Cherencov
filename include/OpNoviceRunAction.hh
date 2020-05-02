@@ -52,17 +52,10 @@ class OpNoviceRunAction : public G4UserRunAction
   public:
     virtual void BeginOfRunAction(const G4Run* aRun);
     virtual void EndOfRunAction(const G4Run* aRun);
-    virtual void AddEdep(G4double edep);
-    virtual void AddPath(G4double path);
 
   private:
     G4Timer* fTimer;
-    G4Accumulable<G4double> fPath;
-    void sumPath (G4double x, G4double y, G4double z, G4double xx, G4double yy, G4double zz)
-    {
-        fPath += sqrt((xx - x) * (xx - x) + (yy-y)*(yy-y) + (zz-z)*(zz-z));
-    }
-};
+    };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

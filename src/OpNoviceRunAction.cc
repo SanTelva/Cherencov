@@ -43,15 +43,12 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 extern FILE *fp2;
-extern G4double edepSi;
+extern G4double edepSi1, edepSi2, edepSi3, edepSiC;
 OpNoviceRunAction::OpNoviceRunAction()
  : G4UserRunAction(),
-   fTimer(0),
-   fPath(0.)
+   fTimer(0)
 {
   fTimer = new G4Timer;
-  G4AccumulableManager* accManager = G4AccumulableManager::Instance();
-  accManager -> RegisterAccumulable(fPath);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,7 +62,10 @@ OpNoviceRunAction::~OpNoviceRunAction()
 
 void OpNoviceRunAction::BeginOfRunAction(const G4Run* aRun)
 {
-  edepSi = 0;
+  edepSi1 = 0;
+  edepSi2 = 0;
+  edepSi3 = 0;
+  edepSiC = 0;
   G4AccumulableManager* accManager = G4AccumulableManager::Instance();
   accManager -> Reset();
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
@@ -91,13 +91,4 @@ void OpNoviceRunAction::EndOfRunAction(const G4Run* aRun)
 //         << " " << *fTimer << G4endl;
 }
 
-void OpNoviceRunAction::AddEdep(G4double edep)
-{
-    edepSi += edep;
-}
-
-void OpNoviceRunAction::AddPath(G4double path)
-{
-    fPath += path;
-}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

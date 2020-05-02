@@ -41,7 +41,7 @@
 #include "G4SystemOfUnits.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-extern G4double edepSi;
+extern G4double edepSi1, edepSi2, edepSi3, edepSiC;
 extern FILE *fp2, *fp3;
 
 G4int nRun = 0;
@@ -84,8 +84,10 @@ void OpNoviceStackingAction::NewStage()
   G4cout << "Number of Cerenkov photons produced in this event : "
          << fCerenkovCounter << G4endl;
   G4cout << "Total energy deposit by this event: "
-	 << edepSi/MeV << G4endl;
-  fprintf(fp3, "%3d\t%7.6e\t%3d\n", nRun, edepSi/MeV, fCerenkovCounter);
+	 << (edepSi1+edepSi2+edepSi3+edepSiC)/MeV << G4endl;
+  fprintf(fp3, "%3d\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%7.6e\t%3d\n", nRun, 
+  edepSi1/MeV, edepSi2/MeV, edepSiC/MeV, edepSi3/MeV,
+  (edepSi1+edepSi2+edepSi3+edepSiC)/MeV, fCerenkovCounter);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -96,7 +98,10 @@ void OpNoviceStackingAction::PrepareNewEvent()
   fScintillationCounter = 0;
   fCerenkovCounter = 0;
   fExtruderPhotons = 0;
-  edepSi = 0;
+  edepSi1 = 0;
+  edepSi2 = 0;
+  edepSi3 = 0;
+  edepSiC = 0;
   nRun++;
 }
 
