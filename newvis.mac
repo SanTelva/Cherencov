@@ -10,7 +10,7 @@
 /vis/viewer/set/autoRefresh false
 /vis/verbose errors
 
-/vis/drawVolume
+#/vis/drawVolume
 
 #
 # Draw smooth trajectories at end of event, showing trajectory points

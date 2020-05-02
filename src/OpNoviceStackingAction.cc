@@ -41,7 +41,7 @@
 #include "G4SystemOfUnits.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-extern G4double edepSi1, edepSi2, edepSi3, edepSiC;
+extern G4double edepSi1, edepSi2, edepSi3, edepSiC, genEkin;
 extern FILE *fp2, *fp3;
 
 G4int nRun = 0;
@@ -85,7 +85,9 @@ void OpNoviceStackingAction::NewStage()
          << fCerenkovCounter << G4endl;
   G4cout << "Total energy deposit by this event: "
 	 << (edepSi1+edepSi2+edepSi3+edepSiC)/MeV << G4endl;
-  fprintf(fp3, "%3d\t%4.4e\t%4.3e\t%4.3e\t%4.3e\t%4.3e\t%3d\n", nRun, 
+   G4cout << "Generated energy of primary particle: "
+	 << genEkin << G4endl;
+  fprintf(fp3, "%3d\t%4.3e\t%4.3e\t%4.3e\t%4.3e\t%4.3e\t%4.3e\t%3d\n", nRun, genEkin, 
   edepSi1/MeV, edepSi2/MeV, edepSiC/MeV, edepSi3/MeV,
   (edepSi1+edepSi2+edepSi3+edepSiC)/MeV, fCerenkovCounter);
 }

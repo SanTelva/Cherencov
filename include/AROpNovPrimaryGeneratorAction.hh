@@ -35,6 +35,7 @@
 #define AROpNovPrimaryGeneratorAction_h 1
 
 #include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4ParticleGun.hh"
 #include "globals.hh"
 
 class G4ParticleGun;
@@ -52,6 +53,8 @@ class AROpNovPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
   public:
     virtual void GeneratePrimaries(G4Event*);
+    const G4ParticleGun* GetParticleGun() const {return fParticleGun;}
+    G4ParticleTable* particleTable;
 
     void SetOptPhotonPolar();
     void SetOptPhotonPolar(G4double);

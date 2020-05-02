@@ -85,7 +85,7 @@ namespace {
 
   FILE *fp2, *fp3;
   G4double edepSi1=0, edepSi2=0, edepSi3=0, edepSiC = 0;
-
+  G4double genEkin = 0;
 int main(int argc,char** argv)
 {
   // Evaluate arguments
@@ -97,7 +97,7 @@ int main(int argc,char** argv)
 
   fp2=fopen( "particles-tracks","w");
   fp3=fopen("logoutput", "w");
-  fprintf(fp3, "Run\tedepSi1\tedepSi2\tedepSiC\tedepSi3\tedepSum\tCerCount\n");
+  fprintf(fp3, "Run\tEprim\tedepSi1\tedepSi2\tedepSiC\tedepSi3\tedepSum\tCerCount\n");
   G4String macro;
   G4String session;
 #ifdef G4MULTITHREADED
